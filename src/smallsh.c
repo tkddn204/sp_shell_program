@@ -97,7 +97,7 @@ procline()
             BACKGROUND : FOREGROUND;
             if (narg != 0) {
                 arg[narg] = NULL;
-                runcommand(arg, type);
+                runcom0mand(arg, type);
             }
             if (toktype == EOL) return;
             narg = 0;
