@@ -1,7 +1,7 @@
 #include "common.h"
 
-userin(char *p);
-gettok(char **outptr);
-inarg(char c);
-procline();
-runcommand(char **cline, char where);
+int userin(char *p);
+int gettok(char **outptr);
+int inarg(char c);
+void procline();
+int runcommand(char **cline, char where);
