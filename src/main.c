@@ -1,4 +1,4 @@
-#include "main.h"
+#include "smallsh.h"
 
 char *prompt = "Command>"; /* Prompt */
 

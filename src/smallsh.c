@@ -1,9 +1,14 @@
-#include <sys/types.h>
-#include <sys/wait.h>
-
 #include "smallsh.h"
-#include "constant.h"
 
+// common constant values
+#define EOL 1 /* End Of Line */
+#define ARG 2 /* normal argument */
+#define AMPERSAND 3
+#define SEMICOLON 4
+#define MAXARG 512 /* max. no. command args */
+#define MAXBUF 512 /* max. length input line */
+#define FOREGROUND 0
+#define BACKGROUND 1
 
 static char inpbuf[MAXBUF], tokbuf[2*MAXBUF], *ptr, *tok;
 static char special[] = {' ', '\t', '&', ';', '\n', '\0'};
@@ -36,6 +41,7 @@ int userin(char *p)
         }
     }
 }
+
 /* get token and place into tokbuf */
 int gettok(char **outptr)
 {
@@ -59,24 +65,28 @@ int gettok(char **outptr)
         break;
         default : type = ARG;
         /* printf(" type == ARG getok()\n"); */
-        while(inarg(*ptr))
-        *tok++ = *ptr++;
+        while(1 /*inarg(*ptr)*/) *tok++ = *ptr++;
+        break;
     }
     *tok++ = '\0';
     return type;
 }
+
 /* are we in an ordinary argument */
+/*
 int inarg(char c)
 {
     char *wrk;
     for(wrk = special; *wrk != '\0'; wrk++) {
         if (c == *wrk) {
-            printf(" special arg : %c inarg()\n", *wrk);
+            //printf(" special arg : %c inarg()\n", *wrk);
             return 0;
         }
     }
     return 1;
 }
+*/
+
 /* 입력 줄을 아래와 같이 처리한다 : */
 /* */
 /* gettok을 이용하여 명령문을 구무분석(parse) 하고 */
@@ -98,7 +108,7 @@ void procline()
             case SEMICOLON :
             case AMPERSAND :
             type = (toktype == AMPERSAND) ?
-            BACKGROUND : FOREGROUND;
+                BACKGROUND : FOREGROUND;
             if (narg != 0) {
                 arg[narg] = NULL;
                 runcommand(arg, type);
@@ -120,10 +130,21 @@ int runcommand(char **cline, char where)
     int status;
     if ((pid = fork()) < 0) {
         perror("smallsh");
-        return(-1);
+        return -1;
     }
     if (pid == 0) { /* child */
-        execvp(*cline, cline);
+        if("exit" == *cline)
+            kill(getpid(), SIGKILL);
+        else if("ps" == *cline)
+            project_ps(cline);
+        else if("df" == *cline)
+            project_df(cline);
+        else if("du" == *cline)
+            project_du(cline);
+        else if("printrecode" == *cline || "pr" == *cline)
+            project_print_recode(cline);
+        else
+            execvp(*cline, cline);
         perror(*cline);
         exit(127);
     }
@@ -131,11 +152,11 @@ int runcommand(char **cline, char where)
     /* if background process, print pid and exit */
     if (where == BACKGROUND) {
         printf("[Process id %d]\n",pid);
-        return(0);
+        return 0;
     }
     /* 프로세스 pid가 퇴장할 때까지 기다린다. */
     if (waitpid(pid, &status, 0) == -1)
-    return -1;
+        return -1;
     else
     return status;
 }

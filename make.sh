@@ -1,0 +1,2 @@
+#!/usr/bin
+./src/make
