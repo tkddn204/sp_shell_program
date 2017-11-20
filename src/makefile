@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall
 TARGET=sp_program
-OBJECTS=main.o smallsh.o df.o du.o ps.o print_recode.o
+OBJECTS=main.o smallsh.o lim_youngguk.o bae_minsu.o han_sangwoo.o common.o prompt.o
 
 all: $(TARGET)
 

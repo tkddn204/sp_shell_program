@@ -1,11 +1,12 @@
 #include "smallsh.h"
 
-char *prompt = "Command>"; /* Prompt */
-
 int main(int argc, char *argv[])
 {
-    while(userin(prompt) != EOF) {
+    char prom[PROMPT_SIZE];
+    prompt(prom);
+    while(userin(prom) != EOF) {
         procline();
+        prompt(prom);
     }
     return 0;
 }

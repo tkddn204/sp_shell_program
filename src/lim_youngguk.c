@@ -5,17 +5,18 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 */
 
-int project_ps(char **argv) {
+int project_df(int argc, char **argv) {
+    printf("df - 20131713 Lim Young Guk \n");
     // TODO: 여기에 코드짜면됨
-    printf("ps - 20131722 한상우 \n");
     return 0;
 }
 
 // 테스트용 메인함수
-int main(int argc, char **argv) {
-    return project_ps(argv);
-}
+// int main(int argc, char **argv) {
+//     return project_df(argc, argv);
+// }

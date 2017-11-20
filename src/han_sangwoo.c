@@ -5,17 +5,19 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 */
 
-int project_du(char **argv) {
-    printf("du - 20131705 배민수 \n");
+int project_ps(int argc, char **argv) {
     // TODO: 여기에 코드짜면됨
+    printf("ps - 20131722 Han Sang Woo \n");
+    
     return 0;
 }
 
 // 테스트용 메인함수
-int main(int argc, char **argv) {
-    return project_du(argv);
-}
+// int main(int argc, char **argv) {
+//     return project_ps(argc, argv);
+// }

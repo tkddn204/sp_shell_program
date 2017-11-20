@@ -1,2 +1,2 @@
-#!/usr/bin
-./src/make
+cd src/
+make

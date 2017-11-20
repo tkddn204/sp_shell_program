@@ -65,7 +65,7 @@ int gettok(char **outptr)
         break;
         default : type = ARG;
         /* printf(" type == ARG getok()\n"); */
-        while(1 /*inarg(*ptr)*/) *tok++ = *ptr++;
+        while(inarg(*ptr)) *tok++ = *ptr++;
         break;
     }
     *tok++ = '\0';
@@ -73,7 +73,6 @@ int gettok(char **outptr)
 }
 
 /* are we in an ordinary argument */
-/*
 int inarg(char c)
 {
     char *wrk;
@@ -85,7 +84,6 @@ int inarg(char c)
     }
     return 1;
 }
-*/
 
 /* 입력 줄을 아래와 같이 처리한다 : */
 /* */
@@ -111,7 +109,7 @@ void procline()
                 BACKGROUND : FOREGROUND;
             if (narg != 0) {
                 arg[narg] = NULL;
-                runcommand(arg, type);
+                runcommand(narg, arg, type);
             }
             if (toktype == EOL) return;
             narg = 0;
@@ -124,29 +122,24 @@ void procline()
 /* 만일 where가 smallsh.j에서 정의된 값 BACKGROUND로 */
 /* 지정되어 있으면 waitpid 호출은 생략되고 runcommand는 */
 /* 단순히 프로세스 식별번호만 인쇄하고 복귀한다. */
-int runcommand(char **cline, char where)
+int runcommand(int argc, char **cline, char where)
 {
     int pid; // , exitstat, ret;
     int status;
+    int pr_code;
+
     if ((pid = fork()) < 0) {
         perror("smallsh");
         return -1;
     }
+    
+    pr_code = project_program(pid, argc, cline);
     if (pid == 0) { /* child */
-        if("exit" == *cline)
-            kill(getpid(), SIGKILL);
-        else if("ps" == *cline)
-            project_ps(cline);
-        else if("df" == *cline)
-            project_df(cline);
-        else if("du" == *cline)
-            project_du(cline);
-        else if("printrecode" == *cline || "pr" == *cline)
-            project_print_recode(cline);
-        else
+        if(pr_code == -1) {
             execvp(*cline, cline);
-        perror(*cline);
-        exit(127);
+            perror(*cline);
+            exit(127);
+        }
     }
     /* code for parent */
     /* if background process, print pid and exit */
