@@ -10,8 +10,13 @@
 #define FOREGROUND 0
 #define BACKGROUND 1
 
+// new constant value
+#define PIPE 5
+#define REDIRECTION_LEFT 6
+#define REDIRECTION_RIGHT 7
+
 static char inpbuf[MAXBUF], tokbuf[2*MAXBUF], *ptr, *tok;
-static char special[] = {' ', '\t', '&', ';', '\n', '\0'};
+static char special[] = {' ', '\t', '&', ';', '\n', '\0', '|', '<', '>'};
 
 /* 프롬프트(prompt)를 인쇄하고 키보드에서 한 줄의 */
 /* 입력이 들어오기를 기다린다. 받은 입력은 무엇이건 */
@@ -63,6 +68,15 @@ int gettok(char **outptr)
         case ';' : type = SEMICOLON;
         /* printf(" type == SEMICOLON getok()\n"); */
         break;
+        case '|' : type = PIPE;
+        /* printf(" type == PIPE getok()\n"); */
+        break;
+        case '<' : type = REDIRECTION_LEFT
+        /* printf(" type == REDIRECTION_LEFT getok()\n"); */
+        break;
+        case '>' : type = REDIRECTION_RIGHT
+        /* printf(" type == REDIRECTION_RIGHT getok()\n"); */
+        break;
         default : type = ARG;
         /* printf(" type == ARG getok()\n"); */
         while(inarg(*ptr)) *tok++ = *ptr++;
@@ -113,6 +127,12 @@ void procline()
             }
             if (toktype == EOL) return;
             narg = 0;
+            break;
+            case PIPE :
+            // TODO: 파이프
+            case REDIRECTION_LEFT :
+            case REDIRECTION_RIGHT :
+            // TODO: 리다이렉션
             break;
         }
     }

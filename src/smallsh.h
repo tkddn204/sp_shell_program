@@ -21,11 +21,14 @@ int runcommand(int argc, char **cline, char where);
 
 // project functions
 void prompt(char *prom);
-int project_program(int pid, int argc, char **cline);
+int command_parser(int pid, int argc, char **cline);
 int project_cd(int argc, char **argv);
+
+int project_history(int argc, char **argv);
+int project_alias(int argc, char **argv);
+
 int project_ps(int argc, char **argv);
 int project_df(int argc, char **argv);
 int project_du(int argc, char **argv);
-int project_print_recode(int argc, char **argv);
 
 #endif

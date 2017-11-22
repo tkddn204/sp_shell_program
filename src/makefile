@@ -1,11 +1,12 @@
 CC=gcc
 CFLAGS=-Wall
 TARGET=sp_program
-OBJECTS=main.o smallsh.o lim_youngguk.o bae_minsu.o han_sangwoo.o common.o prompt.o
+OBJECTS=main.o smallsh.o command_parser.o prompt.o
+PROJECT_OBJECTS=project_alias.o project_cd.o project_df.o project_du.o project_history.o project_ps.o
 
 all: $(TARGET)
 
-$(TARGET) : $(OBJECTS)
+$(TARGET) : $(OBJECTS) $(PROJECT_OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^
 	
 clean:

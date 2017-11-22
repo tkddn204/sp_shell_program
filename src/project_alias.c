@@ -10,14 +10,13 @@
 #include <sys/wait.h>
 */
 
-int project_ps(int argc, char **argv) {
+int project_alias(int argc, char **argv) {
+    printf("alias - 20131705 Bae Min Su \n");
     // TODO: 여기에 코드짜면됨
-    printf("ps - 20131722 Han Sang Woo \n");
-    
     return 0;
 }
 
 // 테스트용 메인함수
 // int main(int argc, char **argv) {
-//     return project_ps(argc, argv);
+//     return project_alias(argc, argv);
 // }
