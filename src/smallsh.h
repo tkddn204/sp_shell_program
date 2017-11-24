@@ -6,11 +6,14 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
 #define PROMPT_SIZE 256
 #define CWD_SIZE 256
+#define PATH_SIZE 256
+#define BUF_SIZE 512
 
 // default functions
 int userin(char *p);

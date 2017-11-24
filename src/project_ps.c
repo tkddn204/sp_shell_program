@@ -1,6 +1,5 @@
 #include "smallsh.h"
 
-#include <fcntl.h>
 #include <dirent.h>
 #include <time.h>
 #include <sys/ioctl.h>
@@ -90,20 +89,20 @@ int operation(int flag) {
 }
 
 int project_ps(int argc, char **argv) {
-    extern char *optarg;
+    // extern char *optarg;
     int parameter;
     printf("ps_info - 20131722 Han Sang Woo \n");
 
     if(argc < 2) {
         operation(FLAG_NOTHING);
     }
-    while( -1 != (parameter = getopt(argc, argv, "a")))
-        switch(optarg) {
-            case 'a':
-            case '?':
-            default:
-                break;
-        }
+    // while( -1 != (parameter = getopt(argc, argv, "a")))
+    //     switch(optarg) {
+    //         case 'a':
+    //         case '?':
+    //         default:
+    //             break;
+    //     }
 
     return 0;
 }

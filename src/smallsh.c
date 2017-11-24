@@ -21,22 +21,31 @@ static char special[] = {' ', '\t', '&', ';', '\n', '\0', '|', '<', '>'};
 /* 프롬프트(prompt)를 인쇄하고 키보드에서 한 줄의 */
 /* 입력이 들어오기를 기다린다. 받은 입력은 무엇이건 */
 /* 프로그램 버퍼에 저장한다. */
-int userin(char *p)
-{
+int userin(char *p) {
+    FILE *fp;
+    char* home = getenv("HOME");
+    char path[PATH_SIZE];
     int c, count;
+
+    strcpy(path, home);
+    strcat(path, "/.history");
+
+    fp = fopen(path, "a");
     /* initialization for later routines */
     ptr = inpbuf;
     tok = tokbuf;
     /* display prompt */
     printf("%s ", p);
     count = 0;
-    while(1) {
-        if ((c = getchar()) == EOF) return EOF;
+    while (1) {
+        if ((c = getchar()) == EOF) {
+            fclose(fp);
+            return EOF;
+        }
         if (count < MAXBUF) inpbuf[count++] = c;
         if (c == '\n' && count < MAXBUF) {
             inpbuf[count] = '\0';
-            /* printf(" inpbuf[%d] : %s \n", count, inpbuf);*/
-            return(count);
+            break;
         }
         /* if line too long, restart */
         if (c == '\n') {
@@ -45,8 +54,10 @@ int userin(char *p)
             printf("%s ", p);
         }
     }
+    fputs(inpbuf, fp);
+    fclose(fp);
+    return count;
 }
-
 /* get token and place into tokbuf */
 int gettok(char **outptr)
 {
@@ -71,10 +82,10 @@ int gettok(char **outptr)
         case '|' : type = PIPE;
         /* printf(" type == PIPE getok()\n"); */
         break;
-        case '<' : type = REDIRECTION_LEFT
+        case '<' : type = REDIRECTION_LEFT;
         /* printf(" type == REDIRECTION_LEFT getok()\n"); */
         break;
-        case '>' : type = REDIRECTION_RIGHT
+        case '>' : type = REDIRECTION_RIGHT;
         /* printf(" type == REDIRECTION_RIGHT getok()\n"); */
         break;
         default : type = ARG;
@@ -128,12 +139,12 @@ void procline()
             if (toktype == EOL) return;
             narg = 0;
             break;
-            case PIPE :
+            // case PIPE :
             // TODO: 파이프
-            case REDIRECTION_LEFT :
-            case REDIRECTION_RIGHT :
+            // case REDIRECTION_LEFT :
+            // case REDIRECTION_RIGHT :
             // TODO: 리다이렉션
-            break;
+            // break;
         }
     }
 }
@@ -153,7 +164,7 @@ int runcommand(int argc, char **cline, char where)
         return -1;
     }
     
-    pr_code = project_program(pid, argc, cline);
+    pr_code = command_parser(pid, argc, cline);
     if (pid == 0) { /* child */
         if(pr_code == -1) {
             execvp(*cline, cline);

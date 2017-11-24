@@ -1,6 +1,6 @@
 #include "smallsh.h"
 
-#define CD_PRINT_FORMAT "move to %s!!\n"
+#define CD_PRINT_FORMAT "[move to %s]\n"
 
 int oper_cd(char *dir) {
     if(chdir(dir) == 0) {
