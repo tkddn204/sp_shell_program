@@ -67,6 +67,42 @@ int userin(char *p) {
     fclose(fp);
     return count;
 }
+
+int history_userIn(char *command) {
+    FILE *fp;
+    char *home = getenv("HOME");
+    char path[PATH_SIZE];
+    int c, count;
+    int n = 0;
+
+    strcpy(path, home);
+    strcat(path, "/.history");
+
+    if ((fp = fopen(path, "a")) == NULL) {
+        perror("history file open");
+    }
+
+    /* initialization for later routines */
+    ptr = inpbuf;
+    tok = tokbuf;
+    /* display prompt */
+
+    count = 0;
+    while (1) {
+        if ((c = command[n++]) == '\0') {
+            fclose(fp);
+            return EOF;
+        }
+        if (count < MAXBUF) inpbuf[count++] = c;
+        if (c == '\n' && count < MAXBUF) {
+            inpbuf[count] = '\0';
+            break;
+        }
+    }
+//    fputs(inpbuf, fp);
+    fclose(fp);
+    return count;
+}
 /* get token and place into tokbuf */
 int gettok(char **outptr)
 {
