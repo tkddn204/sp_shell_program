@@ -170,6 +170,8 @@ int runcommand(int argc, char **cline, char where)
             execvp(*cline, cline);
             perror(*cline);
             exit(127);
+        } else {
+            exit(0);
         }
     }
     /* code for parent */
