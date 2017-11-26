@@ -10,6 +10,12 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+// common constant values
+#define MAXARG 512 /* max. no. command args */
+#define MAXBUF 512 /* max. length input line */
+#define FOREGROUND 0
+#define BACKGROUND 1
+
 #define ALIAS_FILE_NAME "/.alias"
 #define TMP_ALIAS_FILE_NAME "/.alias_tmp"
 

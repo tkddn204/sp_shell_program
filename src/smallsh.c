@@ -1,16 +1,10 @@
 #include "smallsh.h"
 
-// common constant values
+// new constant value
 #define EOL 1 /* End Of Line */
 #define ARG 2 /* normal argument */
 #define AMPERSAND 3
 #define SEMICOLON 4
-#define MAXARG 512 /* max. no. command args */
-#define MAXBUF 512 /* max. length input line */
-#define FOREGROUND 0
-#define BACKGROUND 1
-
-// new constant value
 #define PIPE 5
 #define REDIRECTION_LEFT 6
 #define REDIRECTION_RIGHT 7
