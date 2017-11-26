@@ -51,14 +51,15 @@ int runcommand_pipe(int argc, char **cline, char where)
             return 0;
         }
 
-        /* 프로세스 pid가 퇴장할 때까지 기다린다. */
-        if (waitpid(pid[i], &status, 0) == -1)
-            return -1;
-        else
-            return status;
     }
     close(fd[0]);
     close(fd[1]);
+
+    /* 프로세스 pid가 퇴장할 때까지 기다린다. */
+    if (waitpid(pid[1], &status, 0) == -1)
+        return -1;
+    else
+        return status;
 }
 
 int runcommand_redirection(int argc, char **cline, char where)
