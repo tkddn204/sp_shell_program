@@ -11,7 +11,7 @@ int runcommand_pipe(int argc, char **cline, char where)
     int i;
 
     for(i = 0; i < 2; i++) {
-        if (pipe(fd) < 0) {
+        if (pipe(fd[i]) < 0) {
             perror("smallsh pipe error");
             return -1;
         }
@@ -43,8 +43,10 @@ int runcommand_pipe(int argc, char **cline, char where)
         }
     }
     printf("qwerqwr %d\n", pid[i]);
-    close(fd[0]);
-    close(fd[1]);
+    for(i = 0; i < 2; i++) {
+        close(fd[i][0]);
+        close(fd[i][1]);
+    }
 
     /* code for parent */
     /* if background process, print pid and exit */
