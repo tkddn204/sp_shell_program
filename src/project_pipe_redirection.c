@@ -27,6 +27,7 @@ int runcommand_pipe(int argc, char **cline, char where)
             dup2(fd[0], 0);
         }
 
+        printf("asdfasf %d\n", pid[i]);
         pr_code = command_parser(pid, argc, cline);
         if (pid[i] == -1) {
             perror("failed fork");
@@ -36,9 +37,12 @@ int runcommand_pipe(int argc, char **cline, char where)
                 execvp(*cline, cline);
                 perror(*cline);
                 exit(127);
+            } else {
+                exit(0);
             }
         }
     }
+    printf("qwerqwr %d\n", pid[i]);
     close(fd[0]);
     close(fd[1]);
 
