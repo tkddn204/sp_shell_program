@@ -10,6 +10,9 @@ int runcommand_pipe(int argc, char **cline, char where)
     char buf[BUF_SIZE];
     int i;
 
+    // for (i = 0; i < )
+
+
     for(i = 0; i < 2; i++) {
         if (pipe(fd[i]) < 0) {
             perror("smallsh pipe error");
@@ -21,18 +24,14 @@ int runcommand_pipe(int argc, char **cline, char where)
             return -1;
         }
 
-        printf("asdfasf 33 %d\n", pid[i]);
         if(pid[i] == 0) {
             if(i == 0) {
-                printf("asdfasf 44 %d\n", pid[i]);
-                dup2(fd[i][1], 1);
+                //dup2(fd[i][1], 1);
             } else if(i > 0) {
-                printf("asdfasf 55 %d\n", pid[i]);
                 dup2(fd[i][0], 0);
             }
         }
 
-        printf("asdfasf %d\n", pid[i]);
         pr_code = command_parser(pid, argc, cline);
         if (pid[i] == -1) {
             perror("failed fork");
