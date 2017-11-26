@@ -26,9 +26,9 @@ int runcommand_pipe(int argc, char **cline, char where)
 
         if(pid[i] == 0) {
             if(i == 0) {
-                //dup2(fd[i][1], 1);
-            } else if(i > 0) {
                 dup2(fd[i][0], 0);
+            } else if(i > 0) {
+                dup2(fd[i][1], 1);
             }
         }
 
@@ -46,7 +46,7 @@ int runcommand_pipe(int argc, char **cline, char where)
             }
         }
     }
-    printf("qwerqwr %d\n", pid[i]);
+
     for(i = 0; i < 2; i++) {
         close(fd[i][0]);
         close(fd[i][1]);
