@@ -30,8 +30,8 @@ int runcommand(int argc, char **cline, char where);
 // project functions
 void prompt(char *prom);
 
-int alias_check(char *);
 int command_parser(int pid, int argc, char **cline);
+int alias_check(char *);
 
 int project_cd(int argc, char **argv);
 
