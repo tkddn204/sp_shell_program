@@ -167,6 +167,7 @@ void procline()
     int toktype; /* 명령내의 토근의 유형 */
     int narg; /* 지금까지의 인수 수 */
     int type; /* FOREGROUND or BACKGROUND */
+    int special_type = 0; /* PIPE or REDIRECTION */
     /* 토큰 유형에 따라 행동을 취한다. */
     for (narg = 0;;) { /* loop FOREVER */
         switch(toktype = gettok(&arg[narg])) {
@@ -180,17 +181,22 @@ void procline()
                     BACKGROUND : FOREGROUND;
                 if (narg != 0) {
                     arg[narg] = NULL;
-                    runcommand(narg, arg, type);
+                    if(special_type == 0) {
+                        runcommand(narg, arg, type);
+                    } else if(special_type == PIPE) {
+                        runcommand_pipe(narg, arg, type);
+                    } else {
+                        runcommand_redirection(narg, arg, type);
+                    }
                 }
                 if (toktype == EOL) return;
                 narg = 0;
-            break;
-            // case PIPE :
-            // TODO: 파이프
-            // case REDIRECTION_LEFT :
-            // case REDIRECTION_RIGHT :
-            // TODO: 리다이렉션
-            // break;
+                break;
+            case PIPE :
+            case REDIRECTION_LEFT :
+            case REDIRECTION_RIGHT :
+                special_type = toktype;
+                break;
         }
     }
 }
@@ -211,7 +217,10 @@ int runcommand(int argc, char **cline, char where)
     }
     
     pr_code = command_parser(pid, argc, cline);
-    if (pid == 0) { /* child */
+    if (pid == -1) {
+        perror("failed fork");
+        exit(1);
+    } else if (pid == 0) { /* child */
         if(pr_code == -1) {
             execvp(*cline, cline);
             perror(*cline);
