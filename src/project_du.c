@@ -80,7 +80,7 @@ int project_du(int argc, char *argv[]) {
 
     int total = findDirectory(filePath);
 
-    printf("총 합 : %d\n", total);
+    printf("Total : %d\n", total);
 
     return total;
 }
