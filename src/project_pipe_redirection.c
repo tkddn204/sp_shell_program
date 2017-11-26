@@ -10,6 +10,7 @@ int runcommand_pipe(int argc, char **cline, char where)
     char buf[BUF_SIZE];
     int i;
 
+    printf("asd\n");
     for(i = 0; i < 2; i++) {
         if (pipe(fd) < 0) {
             perror("smallsh pipe error");
