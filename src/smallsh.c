@@ -170,19 +170,20 @@ void procline()
     /* 토큰 유형에 따라 행동을 취한다. */
     for (narg = 0;;) { /* loop FOREVER */
         switch(toktype = gettok(&arg[narg])) {
-            case ARG : if (narg < MAXARG) narg++;
-            break;
+            case ARG :
+                if (narg < MAXARG) narg++;
+                break;
             case EOL :
             case SEMICOLON :
             case AMPERSAND :
-            type = (toktype == AMPERSAND) ?
-                BACKGROUND : FOREGROUND;
-            if (narg != 0) {
-                arg[narg] = NULL;
-                runcommand(narg, arg, type);
-            }
-            if (toktype == EOL) return;
-            narg = 0;
+                type = (toktype == AMPERSAND) ?
+                    BACKGROUND : FOREGROUND;
+                if (narg != 0) {
+                    arg[narg] = NULL;
+                    runcommand(narg, arg, type);
+                }
+                if (toktype == EOL) return;
+                narg = 0;
             break;
             // case PIPE :
             // TODO: 파이프
@@ -229,5 +230,5 @@ int runcommand(int argc, char **cline, char where)
     if (waitpid(pid, &status, 0) == -1)
         return -1;
     else
-    return status;
+        return status;
 }

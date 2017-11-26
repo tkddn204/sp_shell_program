@@ -60,9 +60,7 @@ int alias_check(char *cline) {
             i = i + 2;
 
             while (buf[i] != '\0') {
-                cmd_buf[j] = buf[i];
-                i++;
-                j++;
+                cmd_buf[j++] = buf[i++];
             }
 
             cmd_buf[j - 2] = '\n';
@@ -71,8 +69,10 @@ int alias_check(char *cline) {
             if (custom_userIn(cmd_buf) != EOF) {
                 procline();
             }
+            printf("plus\n");
             return 0;
         }
     }
+    printf("minus\n");
     return -1;
 }

@@ -1,4 +1,6 @@
 #include "smallsh.h"
+#include <memory.h>
+#include <wchar.h>
 
 
 #define ALIAS_FILE_NAME "/.alias"
@@ -26,8 +28,11 @@ int project_alias(int argc, char **argv) {
     int optcount = 0;
     char add_tmp[BUFSIZ];
 
+    memset(add_tmp, 0, BUFSIZ);
+
     strcpy(path, home);
     strcat(path, ALIAS_FILE_NAME);
+
 
     while ((n = getopt(argc, argv, "cu")) != -1) {
 
@@ -102,6 +107,8 @@ void alias_allPrint(FILE *fp) {
     while (fgets(buf, BUFSIZ, fp) != NULL) {
         fputs(buf, stdout);
     }
+
+
 }
 
 int alias_addAlias(FILE *fp, char *alias) {
