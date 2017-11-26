@@ -6,7 +6,7 @@ int runcommand_pipe(int argc, char **cline, char where)
     int status;
     int pr_code;
 
-    int fd[2];
+    int fd[i][2];
     char buf[BUF_SIZE];
     int i;
 
@@ -16,19 +16,15 @@ int runcommand_pipe(int argc, char **cline, char where)
             return -1;
         }
 
-        printf("asd\n");
-
         if ((pid[i] = fork()) < 0) {
             perror("smallsh error");
             return -1;
         }
 
-        printf("asd\n");
-        
         if(i == 0) {
-            dup2(fd[1], 1);
+            dup2(fd[i][1], 1);
         } else if(i > 0) {
-            dup2(fd[0], 0);
+            dup2(fd[i][0], 0);
         }
 
         printf("asdfasf %d\n", pid[i]);
