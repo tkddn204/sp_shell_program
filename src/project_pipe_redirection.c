@@ -36,8 +36,6 @@ int runcommand_pipe(int argc, char **cline, char where)
                 execvp(*cline, cline);
                 perror(*cline);
                 exit(127);
-            } else {
-                exit(0);
             }
         }
     }
