@@ -11,7 +11,6 @@ int runcommand_pipe(int argc, char **cline, char where)
     int i;
 
     for(i = 0; i < 2; i++) {
-
         if (pipe(fd) < 0) {
             perror("smallsh pipe error");
             return -1;
@@ -27,7 +26,7 @@ int runcommand_pipe(int argc, char **cline, char where)
         } else if(i > 0) {
             dup2(fd[0], 0);
         }
-        
+
         pr_code = command_parser(pid, argc, cline);
         if (pid[i] == -1) {
             perror("failed fork");
@@ -40,26 +39,22 @@ int runcommand_pipe(int argc, char **cline, char where)
             } else {
                 exit(0);
             }
-        } else if (pid[i] > 0) {
-            if(pr_code == -1) {
-                execvp(*cline, cline);
-                perror(*cline);
-                exit(127);
-            } else {
-                exit(0);
-            }
         }
-
-        /* code for parent */
-        /* if background process, print pid and exit */
-        if (where == BACKGROUND) {
-            printf("[Process id %d]\n",pid);
-            return 0;
-        }
-
     }
     close(fd[0]);
     close(fd[1]);
+
+    /* code for parent */
+    /* if background process, print pid and exit */
+    if (where == BACKGROUND) {
+        if(pid[0] > 0) {
+            printf("[Process id %d]\n",pid[0]);
+        }
+        if(pid[1] > 0) {
+            printf("[Process id %d]\n",pid[1]);
+        }
+        return 0;
+    }
 
     /* 프로세스 pid가 퇴장할 때까지 기다린다. */
     if (waitpid(pid[1], &status, 0) == -1)
