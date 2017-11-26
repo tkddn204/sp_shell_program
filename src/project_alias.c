@@ -101,7 +101,7 @@ int project_alias(int argc, char **argv) {
 }
 
 void helpPrint_alias() {
-    perror(stderr, "can not parse args - alias [c], [u] OR alias_command='command' \n"); //stderr
+    perror("can not parse args - alias [c], [u] OR alias_command='command' \n"); //stderr
     exit(22);
 }
 
