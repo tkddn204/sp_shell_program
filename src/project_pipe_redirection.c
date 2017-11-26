@@ -22,12 +22,14 @@ int runcommand_pipe(int argc, char **cline, char where)
         }
 
         printf("asdfasf 33 %d\n", pid[i]);
-        if(i == 0) {
-            printf("asdfasf 44 %d\n", pid[i]);
-            dup2(fd[i][1], 1);
-        } else if(i > 0) {
-            printf("asdfasf 55 %d\n", pid[i]);
-            dup2(fd[i][0], 0);
+        if(pid[i] == 0) {
+            if(i == 0) {
+                printf("asdfasf 44 %d\n", pid[i]);
+                dup2(fd[i][1], 1);
+            } else if(i > 0) {
+                printf("asdfasf 55 %d\n", pid[i]);
+                dup2(fd[i][0], 0);
+            }
         }
 
         printf("asdfasf %d\n", pid[i]);
