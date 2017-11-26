@@ -69,10 +69,8 @@ int alias_check(char *cline) {
             if (custom_userIn(cmd_buf) != EOF) {
                 procline();
             }
-            printf("plus\n");
             return 0;
         }
     }
-    printf("minus\n");
     return -1;
 }
