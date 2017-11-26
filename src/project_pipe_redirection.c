@@ -10,18 +10,21 @@ int runcommand_pipe(int argc, char **cline, char where)
     char buf[BUF_SIZE];
     int i;
 
-    printf("asd\n");
     for(i = 0; i < 2; i++) {
         if (pipe(fd) < 0) {
             perror("smallsh pipe error");
             return -1;
         }
 
+        printf("asd\n");
+
         if ((pid[i] = fork()) < 0) {
             perror("smallsh error");
             return -1;
         }
 
+        printf("asd\n");
+        
         if(i == 0) {
             dup2(fd[1], 1);
         } else if(i > 0) {
