@@ -1,7 +1,5 @@
 #include "smallsh.h"
 
-#define HISTORY_FILE_NAME "/.history"
-
 #define CAN_NOT_OPEN_HISTORY_FILE "can not open history file"
 
 void helpPrint_history(); // 명렁어 사용 가이드
@@ -24,7 +22,7 @@ int project_history(int argc, char **argv) {
     int history_num = 1;
 
     strcpy(path, home);
-    strcat(path, "/.history");
+    strcat(path, HISTORY_FILE_NAME);
     
     if ((fp = fopen(path, "r")) == NULL) {
         perror("history file read");
@@ -71,9 +69,9 @@ int project_history(int argc, char **argv) {
     return 1;
 }
 
-
 void helpPrint_history() {
-    (void) fprintf(stderr, "can not parse args - history [c]\n"); //stderr
+    perror("can not parse args - history [c]\n");
+    exit(22);
 }
 
 void hisroty_allPrint(FILE *fp) {
@@ -111,7 +109,7 @@ void histroy_numPrint(FILE *fp, int lineNum) {
 //            }
 //        }
         fputs(buf, stdin);
-        if (history_userIn(buf) != EOF) {
+        if (custom_userIn(buf) != EOF) {
             procline();
         }
         return;

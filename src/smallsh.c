@@ -28,7 +28,7 @@ int userin(char *p) {
     int c, count;
 
     strcpy(path, home);
-    strcat(path, "/.history");
+    strcat(path, HISTORY_FILE_NAME);
 
     if ((fp = fopen(path, "a")) == NULL) {
         perror("history file open");
@@ -68,7 +68,7 @@ int userin(char *p) {
     return count;
 }
 
-int history_userIn(char *command) {
+int custom_userIn(char *command) {
     FILE *fp;
     char *home = getenv("HOME");
     char path[PATH_SIZE];
@@ -76,7 +76,7 @@ int history_userIn(char *command) {
     int n = 0;
 
     strcpy(path, home);
-    strcat(path, "/.history");
+    strcat(path, HISTORY_FILE_NAME);
 
     if ((fp = fopen(path, "a")) == NULL) {
         perror("history file open");

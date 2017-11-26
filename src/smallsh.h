@@ -10,6 +10,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#define ALIAS_FILE_NAME "/.alias"
+#define TMP_ALIAS_FILE_NAME "/.alias_tmp"
+
+#define HISTORY_FILE_NAME "/.history"
+
 #define PROMPT_SIZE 256
 #define CWD_SIZE 256
 #define PATH_SIZE 256
@@ -24,7 +29,10 @@ int runcommand(int argc, char **cline, char where);
 
 // project functions
 void prompt(char *prom);
+
+int alias_check(char *);
 int command_parser(int pid, int argc, char **cline);
+
 int project_cd(int argc, char **argv);
 
 int project_history(int argc, char **argv);
