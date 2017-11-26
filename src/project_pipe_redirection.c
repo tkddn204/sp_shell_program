@@ -28,7 +28,8 @@ int runcommand_pipe(int argc, char **cline, char where)
             if(i == 0) {
                 dup2(fd[i][0], 0);
             } else if(i > 0) {
-                dup2(fd[i][1], 1);
+                dup2(fd[i][0], fd[i][0]);
+                dup2(1, fd[i][1]);
             }
         }
 
