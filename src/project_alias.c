@@ -10,8 +10,11 @@
 #define CAN_NOT_OPEN_ALIAS_FILE "can not open alias file"
 
 void helpPrint_alias();
+
 int alias_addAlias(FILE *, char *);
+
 void alias_allPrint(FILE *);
+
 void alias_unAlias(FILE *, char *);
 
 int uflag;
@@ -98,7 +101,7 @@ int project_alias(int argc, char **argv) {
 }
 
 void helpPrint_alias() {
-    perror("can not parse args - alias [c], [u] OR alias_command='command' \n"); //stderr
+    perror(stderr, "can not parse args - alias [c], [u] OR alias_command='command' \n"); //stderr
     exit(22);
 }
 
@@ -178,25 +181,31 @@ int alias_addAlias(FILE *fp, char *alias) {
     }
 
 
+
+
     // alias 실제명령어 저장
     while (command[count] != '\0') {
         real_command[count2++] = command[count++];
 
     }
+
     real_command[count2] = '\0';
 
-    printf("실제 명령어 체크 %s \n", real_command);
 
 
     //작은따옴표 및 명령어 끝부분처리
-    if (real_command[count2 - 1] == '\'' && dotflag == 1)
-        real_command[count2 - 1] = '\0';
+    if (real_command[count2 - 2] == '\'' && dotflag == 1)
+        real_command[count2 - 2] = '\0';
 
-    else if (real_command[count2 - 1] != '\'' && dotflag == 1) {
+    else if (real_command[count2 - 2] != '\'' && dotflag == 1) {
         helpPrint_alias();
         return -1;
+    } else if (dotflag == 0) {
+        real_command[count2 - 1] = '\0';
+
     }
 
+//    printf("실제 명령어 체크 %s \n", real_command);
 
     strcat(alias_command, "=\'");
     strcat(alias_command, real_command);
