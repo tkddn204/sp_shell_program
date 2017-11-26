@@ -6,7 +6,7 @@ int runcommand_pipe(int argc, char **cline, char where)
     int status;
     int pr_code;
 
-    int fd[i][2];
+    int fd[2][2];
     char buf[BUF_SIZE];
     int i;
 
