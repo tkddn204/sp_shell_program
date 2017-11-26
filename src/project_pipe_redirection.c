@@ -22,16 +22,17 @@ int runcommand_pipe(int argc, char **cline, char where)
             return -1;
         }
 
+        if(i == 0) {
+            dup2(fd[1], 1);
+        } else if(i > 0) {
+            dup2(fd[0], 0);
+        }
+        
+        pr_code = command_parser(pid, argc, cline);
         if (pid[i] == -1) {
             perror("failed fork");
             exit(1);
         } else if (pid[i] == 0) { /* child */
-            if(i == 0) {
-                dup2(fd[1], 1);
-            } else if(i > 0) {
-                dup2(fd[0], 0);
-            }
-            pr_code = command_parser(pid, argc, cline);
             if(pr_code == -1) {
                 execvp(*cline, cline);
                 perror(*cline);
@@ -40,8 +41,13 @@ int runcommand_pipe(int argc, char **cline, char where)
                 exit(0);
             }
         } else if (pid[i] > 0) {
-            dup2(fd[1], 1);
-            pr_code = command_parser(pid, argc, cline);
+            if(pr_code == -1) {
+                execvp(*cline, cline);
+                perror(*cline);
+                exit(127);
+            } else {
+                exit(0);
+            }
         }
 
         /* code for parent */
