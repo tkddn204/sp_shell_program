@@ -36,7 +36,7 @@ int runcommand(int *argc, char **cline, char where);
 // project functions
 void prompt(char *prom);
 
-void command_parser(int *pid, int argc, char **cline);
+void command_parser(int pid, int argc, char **cline);
 int alias_check(char *);
 
 static char *arg_pipe[2][MAXARG+1];
