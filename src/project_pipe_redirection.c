@@ -71,16 +71,8 @@ int runcommand_redirection(int argc, char **cline, char where)
         return -1;
     }
     
-    pr_code = command_parser(pid, argc, cline);
-    if (pid == 0) { /* child */
-        if(pr_code == -1) {
-            execvp(*cline, cline);
-            perror(*cline);
-            exit(127);
-        } else {
-            exit(0);
-        }
-    }
+    command_parser(pid, argc, cline);
+    
     /* code for parent */
     /* if background process, print pid and exit */
     if (where == BACKGROUND) {
