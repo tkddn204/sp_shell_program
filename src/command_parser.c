@@ -2,7 +2,7 @@
 
 #define ALIAS_FILE_NAME "/.alias"
 
-void command_parser(int pid, int argc, char **cline) {
+void command_parser(int *pid, int argc, char **cline) {
     if (pid == -1) {
         perror("failed fork");
         exit(1);

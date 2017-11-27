@@ -6,18 +6,16 @@ int runcommand_pipe(int argc, char where)
     int status;
     int pr_code;
 
-    int fd[2][2];
+    int fd[2];
     char buf[BUF_SIZE];
     int i, j;
 
-    // make pipe fd
-    for (i = 0; i < 2; i++) {
-        if (pipe(fd[i]) < 0) {
-            perror("smallsh pipe error");
-            return -1;
-        }
+    // make pipe
+    if (pipe(fd) < 0) {
+        perror("smallsh pipe error");
+        return -1;
     }
-
+    
     // fork commands
     for(i = 0; i < 2; i++) {
         if ((pid[i] = fork()) < 0) {
@@ -27,25 +25,22 @@ int runcommand_pipe(int argc, char where)
 
         if(pid[i] == 0) {
             if(i == 0) {
-                dup2(fd[i][1], 1);
+                dup2(fd[1], 1);
                 for(j = 0; j < 2; j++) {
-                    close(fd[j][0]);
-                    close(fd[j][1]);
+                    close(fd[j]);
                 }
             } else if(i > 0) {
-                dup2(fd[i-1][0], 0);
+                dup2(fd[0], 0);
                 for(j = 0; j < 2; j++) {
-                    close(fd[j][0]);
-                    close(fd[j][1]);
+                    close(fd[j]);
                 }
             }
         }
-        command_parser(pid, argc, arg_pipe[i]);
+        command_parser(pid[i], argc, arg_pipe[i]);
     }
 
-    for(i = 0; i < 2; i++) {
-        close(fd[i][0]);
-        close(fd[i][1]);
+    for(j = 0; j < 2; j++) {
+        close(fd[j]);
     }
 
     /* code for parent */
