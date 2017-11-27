@@ -10,6 +10,12 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+// common constant values
+#define MAXARG 512 /* max. no. command args */
+#define MAXBUF 512 /* max. length input line */
+#define FOREGROUND 0
+#define BACKGROUND 1
+
 #define ALIAS_FILE_NAME "/.alias"
 #define TMP_ALIAS_FILE_NAME "/.alias_tmp"
 
@@ -25,13 +31,17 @@ int userin(char *p);
 int gettok(char **outptr);
 int inarg(char c);
 void procline();
-int runcommand(int argc, char **cline, char where);
+int runcommand(int *argc, char **cline, char where);
 
 // project functions
 void prompt(char *prom);
 
-int command_parser(int pid, int argc, char **cline);
+void command_parser(int pid, int argc, char **cline);
 int alias_check(char *);
+
+static char *arg_pipe[2][MAXARG+1];
+int runcommand_pipe(int argc, char where);
+int runcommand_redirection(int argc, char **cline, char where);
 
 int project_cd(int argc, char **argv);
 

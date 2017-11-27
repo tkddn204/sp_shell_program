@@ -1,16 +1,10 @@
 #include "smallsh.h"
 
-// common constant values
+// new constant value
 #define EOL 1 /* End Of Line */
 #define ARG 2 /* normal argument */
 #define AMPERSAND 3
 #define SEMICOLON 4
-#define MAXARG 512 /* max. no. command args */
-#define MAXBUF 512 /* max. length input line */
-#define FOREGROUND 0
-#define BACKGROUND 1
-
-// new constant value
 #define PIPE 5
 #define REDIRECTION_LEFT 6
 #define REDIRECTION_RIGHT 7
@@ -167,6 +161,9 @@ void procline()
     int toktype; /* 명령내의 토근의 유형 */
     int narg; /* 지금까지의 인수 수 */
     int type; /* FOREGROUND or BACKGROUND */
+    int special_type = 0; /* PIPE or REDIRECTION */
+    int pipe = 0; /* 파이프 갯수 */
+    int i;
     /* 토큰 유형에 따라 행동을 취한다. */
     for (narg = 0;;) { /* loop FOREVER */
         switch(toktype = gettok(&arg[narg])) {
@@ -180,17 +177,28 @@ void procline()
                     BACKGROUND : FOREGROUND;
                 if (narg != 0) {
                     arg[narg] = NULL;
-                    runcommand(narg, arg, type);
+                    if(special_type == 0) {
+                        runcommand(narg, arg, type);
+                    } else if(special_type == PIPE) {
+                        runcommand_pipe(narg, type);
+                    } else {
+                        runcommand_redirection(narg, arg, type);
+                    }
                 }
                 if (toktype == EOL) return;
                 narg = 0;
-            break;
-            // case PIPE :
-            // TODO: 파이프
-            // case REDIRECTION_LEFT :
-            // case REDIRECTION_RIGHT :
-            // TODO: 리다이렉션
-            // break;
+                break;
+            case PIPE :
+                for (i = 0; i < narg; i++) {
+                    arg_pipe[pipe][i] = arg[i];
+                }
+                arg_pipe[pipe][narg] = NULL;
+                pipe++;
+                narg = 0;
+            case REDIRECTION_LEFT :
+            case REDIRECTION_RIGHT :
+                special_type = toktype;
+                break;
         }
     }
 }
@@ -210,16 +218,8 @@ int runcommand(int argc, char **cline, char where)
         return -1;
     }
     
-    pr_code = command_parser(pid, argc, cline);
-    if (pid == 0) { /* child */
-        if(pr_code == -1) {
-            execvp(*cline, cline);
-            perror(*cline);
-            exit(127);
-        } else {
-            exit(0);
-        }
-    }
+    command_parser(pid, argc, cline);
+
     /* code for parent */
     /* if background process, print pid and exit */
     if (where == BACKGROUND) {
