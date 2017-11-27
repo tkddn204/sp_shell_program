@@ -52,12 +52,11 @@ void print_process(int fd, prpsinfo_t *ps_info) {
             (int)nowtime/60, nowtime%60,
             ps_info->pr_psargs);
     } else if(ps_flag & FLAG_DETAIL) {
-        printf(DETAIL_PRINT_TITLE,
+        printf(DETAIL_PRINT_FORMAT,
             ps_info->pr_uid, ps_info->pr_pid,
             ps_info->pr_ppid, ps_info->pr_cpu,
             ttyname(tty), (int)nowtime/60, nowtime%60,
             ps_info->pr_psargs);
-        )
     }
 }
 
@@ -109,7 +108,6 @@ int ps_operation() {
 
 int project_ps(int argc, char **argv) {
     int parameter;
-    int opt_count = 0;
     printf("ps_info - 20131722 Han Sang Woo \n");
 
     if(argc < 2) {
