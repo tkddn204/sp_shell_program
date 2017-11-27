@@ -12,6 +12,8 @@
 
 #define DEFAULT_PRINT_TITLE "%5s %-12s %6s %s\n"
 #define DEFAULT_PRINT_FORMAT "%5d %-12s %3d:%02d %s\n"
+#define DETAIL_PRINT_TITLE "%8s %5s %4s %s %-12s %6s %s\n"
+#define DETAIL_PRINT_FORMAT "%8d %5d %4d %c %-12s %3d:%02d %s\n"
 
 #define CAN_NOT_OPEN_PROC_FOLDER "can not open process folder.\n"
 #define CAN_NOT_OPEN_FILE_IN_PROC "can not open file in process folder.\n"
@@ -22,13 +24,16 @@ static int ps_flag = FLAG_NOTHING;
 
 void help_print() {
     printf("use - ps [ -aAdefh ]\n");
+    exit(0);
 }
 
 void print_title() {
     if(ps_flag == FLAG_NOTHING) {
         printf(DEFAULT_PRINT_TITLE,
             "PID", "TTY", "TIME", "CMD");
-            
+    } else if(ps_flag & FLAG_DETAIL) {
+        printf(DETAIL_PRINT_TITLE,
+            "UID", "PID", "PPID", "C", "TTY", "TIME", "CMD");
     }
 }
 
@@ -46,6 +51,13 @@ void print_process(int fd, prpsinfo_t *ps_info) {
             ps_info->pr_pid, ttyname(tty),
             (int)nowtime/60, nowtime%60,
             ps_info->pr_psargs);
+    } else if(ps_flag & FLAG_DETAIL) {
+        printf(DETAIL_PRINT_TITLE,
+            ps_info->pr_uid, ps_info->pr_pid,
+            ps_info->pr_ppid, ps_info->pr_cpu,
+            ttyname(tty), (int)nowtime/60, nowtime%60,
+            ps_info->pr_psargs);
+        )
     }
 }
 
@@ -56,9 +68,11 @@ int read_process_file(char* pid) {
     
     sprintf(path, "/proc/%s", pid);
 
-    // if (-1 == access(path, R_OK)) {
-    //     return -1;
-    // }
+    if (!(ps_flag & FLAG_OTHER) && !(ps_flag & FLAG_ALL)) {
+        if (-1 == access(path, R_OK)) {
+            return -1;
+        }
+    }
 
     if(-1 == (fd = open(path, O_RDONLY))) {
         perror(CAN_NOT_OPEN_FILE_IN_PROC);
@@ -87,11 +101,8 @@ int ps_operation() {
     print_title();
     while(NULL != (dir_entry = readdir(dir))) {
         if(dir_entry->d_name[0] == '.') continue;
-        if((read_process_file(dir_entry->d_name)) == -1) {
-            
-        }
+        read_process_file(dir_entry->d_name);
     }
-
     closedir(dir);
     return 0;
 }
@@ -116,9 +127,9 @@ int project_ps(int argc, char **argv) {
                 break;
             case 'f': // detail
                 ps_flag |= FLAG_DETAIL;
+                break;
             case 'h':
                 help_print();
-                exit(0);
                 break;
             case '?':
             default:
