@@ -1,6 +1,6 @@
 #include "smallsh.h"
 
-int runcommand_pipe(int argc, char **cline, char where)
+int runcommand_pipe(int argc, char where)
 {
     int pid[2]; // , exitstat, ret;
     int status;
@@ -33,7 +33,7 @@ int runcommand_pipe(int argc, char **cline, char where)
                 // dup2(fd[i][1], 1);
             }
         }
-        command_parser(pid, argc, cline);
+        command_parser(pid, argc, arg_pipe[i]);
     }
 
     for(i = 0; i < 2; i++) {

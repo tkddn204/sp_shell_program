@@ -39,7 +39,8 @@ void prompt(char *prom);
 void command_parser(int pid, int argc, char **cline);
 int alias_check(char *);
 
-int runcommand_pipe(int argc, char **cline, char where);
+static char *arg_pipe[2][MAXARG+1];
+int runcommand_pipe(int argc, char where);
 int runcommand_redirection(int argc, char **cline, char where);
 
 int project_cd(int argc, char **argv);

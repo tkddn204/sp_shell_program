@@ -162,6 +162,8 @@ void procline()
     int narg; /* 지금까지의 인수 수 */
     int type; /* FOREGROUND or BACKGROUND */
     int special_type = 0; /* PIPE or REDIRECTION */
+    int pipe = 0; /* 파이프 갯수 */
+    int i;
     /* 토큰 유형에 따라 행동을 취한다. */
     for (narg = 0;;) { /* loop FOREVER */
         switch(toktype = gettok(&arg[narg])) {
@@ -178,7 +180,7 @@ void procline()
                     if(special_type == 0) {
                         runcommand(narg, arg, type);
                     } else if(special_type == PIPE) {
-                        runcommand_pipe(narg, arg, type);
+                        runcommand_pipe(narg, type);
                     } else {
                         runcommand_redirection(narg, arg, type);
                     }
@@ -187,6 +189,12 @@ void procline()
                 narg = 0;
                 break;
             case PIPE :
+                for (i = 0; i < narg; i++) {
+                    arg_pip[pipe][i] = arg[i];
+                }
+                arg_pip[pipe][narg] = NULL;
+                pipe++;
+                narg = 0;
             case REDIRECTION_LEFT :
             case REDIRECTION_RIGHT :
                 special_type = toktype;
@@ -211,7 +219,7 @@ int runcommand(int argc, char **cline, char where)
     }
     
     command_parser(pid, argc, cline);
-    
+
     /* code for parent */
     /* if background process, print pid and exit */
     if (where == BACKGROUND) {
