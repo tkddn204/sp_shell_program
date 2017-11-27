@@ -102,7 +102,7 @@ int project_ps(int argc, char **argv) {
     printf("ps_info - 20131722 Han Sang Woo \n");
 
     if(argc < 2) {
-        operation();
+        ps_operation();
     }
 
     while( -1 != (parameter = getopt(argc, argv, "aAefh"))) {
