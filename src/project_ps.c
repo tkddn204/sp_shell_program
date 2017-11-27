@@ -12,8 +12,8 @@
 
 #define DEFAULT_PRINT_TITLE "%5s %-12s %6s %s\n"
 #define DEFAULT_PRINT_FORMAT "%5d %-12s %3d:%02d %s\n"
-#define DETAIL_PRINT_TITLE "%8s %5s %4s %2s %-12s %6s %s\n"
-#define DETAIL_PRINT_FORMAT "%8d %5d %4d %2d %-12s %3d:%02d %s\n"
+#define DETAIL_PRINT_TITLE "%8s %5s %5s %2s %-12s %6s %s\n"
+#define DETAIL_PRINT_FORMAT "%8d %5d %5d %2d %-12s %3d:%02d %s\n"
 
 #define CAN_NOT_OPEN_PROC_FOLDER "can not open process folder.\n"
 #define CAN_NOT_OPEN_FILE_IN_PROC "can not open file in process folder.\n"
