@@ -31,7 +31,7 @@ int userin(char *p);
 int gettok(char **outptr);
 int inarg(char c);
 void procline();
-int runcommand(int *argc, char **cline, char where);
+int runcommand(int argc, char **cline, char where);
 
 // project functions
 void prompt(char *prom);
