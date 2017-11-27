@@ -105,7 +105,7 @@ int project_ps(int argc, char **argv) {
         operation();
     }
 
-    while( -1 != (parameter = getopt(argc, argv, "aAefh")))
+    while( -1 != (parameter = getopt(argc, argv, "aAefh"))) {
         switch(parameter) {
             case 'a': // show current other pid
                 ps_flag |= FLAG_OTHER;
