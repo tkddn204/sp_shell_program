@@ -84,7 +84,7 @@ int ps_operation() {
         exit(1);
     }
 
-    print_title(flag);
+    print_title();
     while(NULL != (dir_entry = readdir(dir))) {
         if(dir_entry->d_name[0] == '.') continue;
         if((read_process_file(dir_entry->d_name)) == -1) {
