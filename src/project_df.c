@@ -1,22 +1,83 @@
 #include "smallsh.h"
 
-/* 이미 있는 헤더 목록
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-*/
+#include <sys/vfs.h>
 
-int project_df(int argc, char **argv) {
-    printf("df - 20131713 Lim Young Guk \n");
-    // TODO: 여기에 코드짜면됨
-    return 0;
+void explainCommand();
+unsigned long GetFileSystemSpace();
+unsigned long GetFileSystemAvailableSpace();
+void FileCheck();
+struct statvfs stat;
+
+void project_du(int argc, char **argv) {
+    int n;
+    
+    if(argc > 2 || argc < 1) {
+        perror("It is not in the correct format ");
+        exit(1);
+    }
+    FileCheck();
+    while((n = getopt(argc,argv,"kga"))!=-1) {
+        switch(n) {
+            case 'k':
+                printf("\nFileSystem");
+                printf("\n1024-blocks  : %lu\n",GetFileSystemSpace());
+                printf("Available    : %lu\n",GetFileSystemAvailableSpace());
+                printf("Used         : %lu\n",GetFileSystemSpace() - GetFileSystemAvailableSpace());
+                printf("Capacity     : %lu%%\n\n",(((stat.f_blocks/2)-(stat.f_bavail/2))*100)/(stat.f_blocks/2)+1);
+                break;
+            case 'g':
+                printf("\nFileSystem\n");
+                printf("1G-blocks    : %luG\n",GetFileSystemSpace()/1024/1024+1);
+                printf("Available    : %luG\n",GetFileSystemAvailableSpace()/1024/1024+1);
+                printf("Used         : %luG\n",(GetFileSystemSpace() - GetFileSystemAvailableSpace())/1024/1024);
+                printf("Capacity     : %lu%%\n\n",(((stat.f_blocks/2)-(stat.f_bavail/2))*100)/(stat.f_blocks/2)+1);
+                break;
+            case 'a':
+                printf("\nFileSystem\n");
+                printf("Block size      : %lu\n",stat.f_bsize);
+                printf("Flag size       : %lu\n",stat.f_frsize);
+                printf("Total blocks    : %lu\n",stat.f_blocks);
+                printf("Free blocks     : %lu\n",stat.f_bfree);
+                printf("Available       : %lu\n",stat.f_bavail);
+                printf("Total files     : %lu\n",stat.f_files);
+                printf("Free files      : %lu\n",stat.f_ffree);
+                printf("Filesystem id   : %lu\n",stat.f_fsid);
+                printf("Filename length : %lu\n\n",stat.f_namemax);
+                break;
+            case '?':
+            default:
+                explainCommand();
+                break;
+        }        
+        unlink("fileSystemTest");
+        exit(1);
+    }
+    printf("\nFileSystem\n");
+    printf("Total blocks    : %lu\n",stat.f_blocks);
+    printf("Total files     : %lu\n\n",stat.f_files);
+    unlink("fileSystemTest");
 }
 
-// 테스트용 메인함수
-// int main(int argc, char **argv) {
-//     return project_df(argc, argv);
-// }
+void explainCommand() {
+    printf("Usage : df\n\n");
+    printf("[-k] : Expressed in kilobytes.\n");
+    printf("[-g] : Expressed in gigabytes.\n");
+    printf("[-a] : Dispalys all information in the filesystem.\n\n");
+    exit(1);
+}
+
+unsigned long GetFileSystemSpace() {
+    return (unsigned long)(stat.f_blocks/2);
+}
+
+unsigned long GetFileSystemAvailableSpace() {
+    return (unsigned long)((stat.f_bavail)/2);
+}
+
+void FileCheck() {
+    creat("fileSystemTest",0777);
+    if(statvfs("fileSystemTest",&stat) == -1) {
+        perror("Error ");
+        exit(1);
+    }
+}

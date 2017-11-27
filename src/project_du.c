@@ -15,8 +15,6 @@ int findDirectory(char *);
 int aflag, sflag, bflag, kflag;
 
 int project_du(int argc, char *argv[]) {
-    //printf("du - 20131705 Bae Min Su \n");
-
     int n;
     char *filePath = NULL;
     char buf[1024];

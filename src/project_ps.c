@@ -108,8 +108,7 @@ int ps_operation() {
 
 int project_ps(int argc, char **argv) {
     int parameter;
-    printf("ps_info - 20131722 Han Sang Woo \n");
-
+    
     if(argc < 2) {
         ps_operation();
         return 0;
