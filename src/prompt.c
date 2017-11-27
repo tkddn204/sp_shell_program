@@ -11,7 +11,7 @@ void prompt(char *prom) {
     time_t timer;
     struct tm *t;
     int hour;
-    char mid[2];
+    char* mid;
 
     int i, j = 0;
 
@@ -27,7 +27,7 @@ void prompt(char *prom) {
     }
 
     sprintf(prom, "InfoSH(%2d.%2d, %s %02d:%02d)[",
-            t->tm_mon+1, t-tm_day, mid, hour, t->tm_min);
+            t->tm_mon+1, t->tm_day, mid, hour, t->tm_min);
 
     while(home_cwd[home_dir_length++] != '\0');
     if(memcmp(current_cwd, home_cwd, home_dir_length - 1) == 0) {
