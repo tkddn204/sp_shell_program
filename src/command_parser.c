@@ -2,21 +2,16 @@
 
 #define ALIAS_FILE_NAME "/.alias"
 
-// return 1 -> parent program failed
-// return 0 -> child program success;
-// return -1 -> not found, call execvp;
-int command_parser(int pid, int argc, char **cline) {
-
-    // parent program
-    if (pid > 0) {
+void command_parser(int pid, int argc, char **cline) {
+    if (pid == -1) {
+        perror("failed fork");
+        exit(1);
+    } else if (pid > 0) { // parent program
         if (strcmp("cd", *cline) == 0)
             project_cd(argc, cline);
-        else
-            return 1;
-    } else if (pid == 0) {
+    } else if (pid == 0) { // child program
         if (strcmp("exit", *cline) == 0) {
             kill(getppid(), SIGINT);
-            exit(0);
         } else if (strcmp("history", *cline) == 0)
             project_history(argc, cline);
         else if (strcmp("alias", *cline) == 0)
@@ -27,12 +22,13 @@ int command_parser(int pid, int argc, char **cline) {
             project_df(argc, cline);
         else if (strcmp("du", *cline) == 0)
             project_du(argc, cline);
-        else {
-            if (alias_check(cline[0]) == -1)
-                return -1;
+        else if (alias_check(cline[0]) == -1) {
+            execvp(*cline, cline);
+            perror(*cline);
+            exit(127);
         }
+        exit(0);
     }
-    return 0;
 }
 
 int alias_check(char *cline) {
