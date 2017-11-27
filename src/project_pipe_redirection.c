@@ -30,7 +30,7 @@ int runcommand_pipe(int argc, char **cline, char where)
                 dup2(fd[i][1], 1);
             } else if(i > 0) {
                 dup2(fd[i-1][0], 0);
-                dup2(fd[i][1], 1);
+                // dup2(fd[i][1], 1);
             }
         }
         command_parser(pid, argc, cline);
