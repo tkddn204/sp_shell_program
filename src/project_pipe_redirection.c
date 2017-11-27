@@ -93,10 +93,7 @@ int runcommand_redirection(int argc, char where, int special_type)
         exit(1);
     }
 
-    command_parser(pid[i], argc, arg_pipe[i]);
-
-
-    command_parser(pid, argc, cline);
+    // command_parser(pid, argc, cline);
     
     /* code for parent */
     /* if background process, print pid and exit */
