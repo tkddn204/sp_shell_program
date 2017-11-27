@@ -8,7 +8,7 @@ unsigned long GetFileSystemAvailableSpace();
 void FileCheck();
 struct statvfs stat;
 
-void project_du(int argc, char **argv) {
+int project_df(int argc, char **argv) {
     int n;
     
     if(argc > 2 || argc < 1) {
@@ -56,6 +56,7 @@ void project_du(int argc, char **argv) {
     printf("Total blocks    : %lu\n",stat.f_blocks);
     printf("Total files     : %lu\n\n",stat.f_files);
     unlink("fileSystemTest");
+    return 0;
 }
 
 void explainCommand() {
