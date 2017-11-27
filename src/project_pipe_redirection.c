@@ -25,9 +25,13 @@ int runcommand_pipe(int argc, char where)
 
         if(pid[i] == 0) {
             if(i == 0) {
-                dup2(fd[1], 1);
-            } else if(i > 0) {
                 dup2(fd[0], 0);
+                close(fd[0]);
+                close(fd[1]);
+            } else if(i > 0) {
+                dup2(fd[1], 1);
+                close(fd[0]);
+                close(fd[1]);
             }
             // for(j = 0; j < 2; j++) {
             //     close(fd[j]);
