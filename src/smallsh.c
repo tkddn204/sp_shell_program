@@ -190,9 +190,9 @@ void procline()
                 break;
             case PIPE :
                 for (i = 0; i < narg; i++) {
-                    arg_pip[pipe][i] = arg[i];
+                    arg_pipe[pipe][i] = arg[i];
                 }
-                arg_pip[pipe][narg] = NULL;
+                arg_pipe[pipe][narg] = NULL;
                 pipe++;
                 narg = 0;
             case REDIRECTION_LEFT :
