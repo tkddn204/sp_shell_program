@@ -29,7 +29,7 @@ int runcommand_pipe(int argc, char where)
             if(i == 0) {
                 dup2(fd[i][1], 1);
             } else if(i > 0) {
-                dup2(fd[i-1][0], 0);
+                // dup2(fd[i-1][0], 0);
                 // dup2(fd[i][1], 1);
             }
         }
