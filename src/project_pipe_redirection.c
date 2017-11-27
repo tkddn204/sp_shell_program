@@ -2,7 +2,7 @@
 
 int runcommand_pipe(int argc, char where)
 {
-    int pid[2]; // , exitstat, ret;
+    int pid[2]; // pipe's each command pid
     int status;
     int pr_code;
 
@@ -26,15 +26,12 @@ int runcommand_pipe(int argc, char where)
         if(pid[i] == 0) {
             if(i == 0) {
                 dup2(fd[1], 1);
-                for(j = 0; j < 2; j++) {
-                    close(fd[j]);
-                }
             } else if(i > 0) {
                 dup2(fd[0], 0);
-                for(j = 0; j < 2; j++) {
-                    close(fd[j]);
-                }
             }
+            // for(j = 0; j < 2; j++) {
+            //     close(fd[j]);
+            // }
         }
         command_parser(pid[i], argc, arg_pipe[i]);
     }
