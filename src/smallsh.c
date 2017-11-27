@@ -163,6 +163,7 @@ void procline()
     int type; /* FOREGROUND or BACKGROUND */
     int special_type = 0; /* PIPE or REDIRECTION */
     int pipe = 0; /* 파이프 갯수 */
+    int redirection = 0; /* 리다이렉션 갯수 */
     int i;
     /* 토큰 유형에 따라 행동을 취한다. */
     for (narg = 0;;) { /* loop FOREVER */
@@ -182,7 +183,7 @@ void procline()
                     } else if(special_type == PIPE) {
                         runcommand_pipe(narg, type);
                     } else {
-                        runcommand_redirection(narg, arg, type);
+                        runcommand_redirection(narg, type, special_type);
                     }
                 }
                 if (toktype == EOL) return;
@@ -194,9 +195,25 @@ void procline()
                 }
                 arg_pipe[pipe][narg] = NULL;
                 pipe++;
+                special_type = toktype;
                 narg = 0;
+                break;
             case REDIRECTION_LEFT :
+                for (i = 0; i < narg; i++) {
+                    arg_redirection[redirection][i];
+                }
+                arg_redirection[redirection][narg] = NULL;
+                redirection++;
+                narg = 0;
+                special_type = toktype;
+                break;
             case REDIRECTION_RIGHT :
+                for (i = 0; i < narg; i++) {
+                    arg_redirection[redirection][i];
+                }
+                arg_redirection[redirection][narg] = NULL;
+                redirection++;
+                narg = 0;
                 special_type = toktype;
                 break;
         }

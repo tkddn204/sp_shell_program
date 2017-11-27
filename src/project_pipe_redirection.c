@@ -63,17 +63,39 @@ int runcommand_pipe(int argc, char where)
         return status;
 }
 
-int runcommand_redirection(int argc, char **cline, char where)
+int runcommand_redirection(int argc, char where, int special_type)
 {
     int pid; // , exitstat, ret;
     int status;
     int pr_code;
+    int file_id;
 
     if ((pid = fork()) < 0) {
         perror("smallsh");
         return -1;
     }
-    
+    if ((pid = fork()) < 0) {
+        perror("smallsh error");
+        return -1;
+    }
+
+    if(pid == 0) {
+        
+        if(file_id = creat(*temp2, 0640)) {
+            perror("file create error");
+            exit(1);
+        }
+
+        dup2(file_id, STDOUT_FILENO);
+        close(file_id);
+        execvp(*arg_redirection, arg_redirection);
+        perror(*arg_redirection);
+        exit(1);
+    }
+
+    command_parser(pid[i], argc, arg_pipe[i]);
+
+
     command_parser(pid, argc, cline);
     
     /* code for parent */
