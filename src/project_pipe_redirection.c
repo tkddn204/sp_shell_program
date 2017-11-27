@@ -8,7 +8,7 @@ int runcommand_pipe(int argc, char where)
 
     int fd[2][2];
     char buf[BUF_SIZE];
-    int i;
+    int i, j;
 
     // make pipe fd
     for (i = 0; i < 2; i++) {
@@ -28,10 +28,16 @@ int runcommand_pipe(int argc, char where)
         if(pid[i] == 0) {
             if(i == 0) {
                 dup2(fd[i][1], 1);
-                dup2(0, fd[i+1][0]);
+                for(j = 0; j < pipe; j++) {
+                    close(fd[j][0]);
+                    close(fd[j][1]);
+                }
             } else if(i > 0) {
                 dup2(fd[i-1][0], 0);
-                dup2(1, fd[i][1]);
+                for(j = 0; j < pipe; j++) {
+                    close(fd[j][0]);
+                    close(fd[j][1]);
+                }
             }
         }
         command_parser(pid, argc, arg_pipe[i]);
