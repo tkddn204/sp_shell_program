@@ -27,6 +27,9 @@ void command_parser(int pid, int argc, char **cline) {
             perror(*cline);
             exit(127);
         }
+        else if (strcmp("cd", *cline) == 0) {
+            // nothing
+        }
         exit(0);
     }
 }
