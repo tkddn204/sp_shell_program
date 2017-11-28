@@ -184,7 +184,7 @@ int isDir(char *path) {
         return 0;
     }
     else
-        return S_ISDIR(buf.st_mode);
+        return S_ISDIR(buf->st_mode);
 }
 
 
