@@ -1,4 +1,10 @@
-#include "smallsh.h"
+#inclue "smallsh.h"
+
+#include <sys/stat.h>
+#include <dirent.h>
+#include <errno.h>
+#include <sys/types.h>
+
 
 void helpPrint();
 
@@ -17,9 +23,9 @@ int findDirectory(char *);
 int aflag, sflag, bflag, kflag;
 
 
-// int main(int argc, char **argv) {
-//     return project_du(argc, argv);
-// }
+int main(int argc, char **argv) {
+    return project_du(argc, argv);
+}
 
 int project_du(int argc, char *argv[]) {
     //printf("du - 20131705 Bae Min Su \n");
