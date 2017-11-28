@@ -115,7 +115,9 @@ int findDirectory(char *path) {
 
             //해당 파일이 디렉토리일시 재귀
             if (isDir(subPath)) {
+                perror("asdf");
                 tmpTotal = tmpTotal + findDirectory(subPath);
+                perror("asdf2");
                 //일반 파일일시 파일사이즈 측정
             } else if (isRegularFile(subPath)) {
                 if ((size = getFileSize(subPath)) == -1) {
@@ -173,7 +175,6 @@ char *pathAddString(char *str1, char *str2) {
     for (j = 0; j < str2Len; j++) {
         sumStr[i + j] = str2[j];
     }
-    printf("%s\n", sumStr);
     return sumStr;
 }
 // 디렉토리인지 검사하는 함수
