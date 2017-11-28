@@ -3,6 +3,7 @@
  
 #define CWD_SIZE 144
 
+// 단위 테스트를 진행
 int main() {
     char prom[CWD_SIZE];
     char* buf_cwd;

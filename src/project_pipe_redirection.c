@@ -81,7 +81,7 @@ int runcommand_redirection(int argc, char where, int special_type)
         return -1;
     }
 
-    // create
+    // > 오른쪽 파일명 생성
     if(pid == 0) {
         if(file_id = creat(filename, 0640)) {
             perror("file create error");
@@ -91,7 +91,7 @@ int runcommand_redirection(int argc, char where, int special_type)
         // dup2 함수로 파일디스크립터 복사
         dup2(file_id, STDOUT_FILENO);
         close(file_id);
-        
+
         execvp(*arg_redirection, arg_redirection);
         perror(*arg_redirection);
         exit(1);

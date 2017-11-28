@@ -41,13 +41,13 @@ void prompt(char *prom);
 void command_parser(int pid, int argc, char **cline);
 int alias_check(char *);
 
+// pip & redirection functions, but not oprate
 static char arg_pipe[20][MAXARG+1];
 static char arg_redirection[20][MAXARG+1];
 int runcommand_pipe(int argc, char where);
 int runcommand_redirection(int argc, char where, int special_type);
 
 int project_cd(int argc, char **argv);
-
 int project_history(int argc, char **argv);
 int project_alias(int argc, char **argv);
 
@@ -55,5 +55,6 @@ int project_ps(int argc, char **argv);
 int project_df(int argc, char **argv);
 int project_du(int argc, char **argv);
 int project_export(int argc, char **argv);
+// project functions
 
 #endif
