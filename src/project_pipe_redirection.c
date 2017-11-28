@@ -65,7 +65,6 @@ int runcommand_pipe(int argc, char where)
 
 int runcommand_redirection(int argc, char where, int special_type)
 {
-    char *temp1[MAXARG], *temp2[MAXARG];
     int pid; // , exitstat, ret;
     int status;
     int pr_code;
@@ -76,13 +75,8 @@ int runcommand_redirection(int argc, char where, int special_type)
         perror("smallsh");
         return -1;
     }
-    if ((pid = fork()) < 0) {
-        perror("smallsh error");
-        return -1;
-    }
 
     if(pid == 0) {
-        
         if(file_id = creat(filename, 0640)) {
             perror("file create error");
             exit(1);
