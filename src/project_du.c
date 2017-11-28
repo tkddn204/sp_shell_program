@@ -104,12 +104,14 @@ int findDirectory(char *path) {
         return -1; // alter exit
     }
 
+    printf("asdfadsf\n");
     while ((dent = readdir(dir))) {
         // . 과 .. 건너뛰기 위한 처리
         defaultCheck++;
 
         if (defaultCheck > 2) {
 
+            printf("asdfadsf2\n");
             //디렉토리 내의 파일들을 읽어 새로운 경로 생성
             subPath = pathAddString(path, dent->d_name);
 
@@ -136,6 +138,7 @@ int findDirectory(char *path) {
 
 
     }
+    printf("asdfadsf3\n");
     // 해당 디렉토리의 총 용량을 출력
     if (sflag == 0) {
         printf("%8.d   path : %s\n", tmpTotal, path);
