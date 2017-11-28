@@ -184,15 +184,14 @@ void procline()
                     BACKGROUND : FOREGROUND;
                 if (narg != 0) {
                     arg[narg] = NULL;
-                    runcommand(narg, arg, type);
-                    /* 파이프 리다이렉션 전용 런커맨드 함수
+                    // 파이프 리다이렉션 전용 런커맨드 함수
                     if(special_type == 0) {
                         runcommand(narg, arg, type);
                     } else if(special_type == PIPE) {
                         runcommand_pipe(narg, type);
                     } else {
                         runcommand_redirection(narg, type, special_type);
-                    } */
+                    }
                 }
                 if (toktype == EOL) return;
                 narg = 0;
