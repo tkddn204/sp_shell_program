@@ -162,17 +162,17 @@ void procline()
     int narg; /* 지금까지의 인수 수 */
     int type; /* FOREGROUND or BACKGROUND */
     int special_type = 0; /* PIPE or REDIRECTION */
-    // int pipe = 0; /* 파이프 갯수 */
-    // int redirection = 0; /* 리다이렉션 갯수 */
+    int pipe = 0; /* 파이프 갯수 */
+    int redirection = 0; /* 리다이렉션 갯수 */
     int i, m, n;
 
-    /* 파이프 리다이렉션 임시변수 초기화
+    // 파이프 리다이렉션 임시변수 초기화
 	for(m=0; m<20; m++) {
 		for(n=0;n<MAXARG+1;n++) {
             arg_pipe[m][n]=0;
             arg_redirection[m][n]=0;
         }
-	} */
+	}
 
     /* 토큰 유형에 따라 행동을 취한다. */
     for (narg = 0;;) { /* loop FOREVER */
@@ -201,7 +201,7 @@ void procline()
             default :
                 if (narg < MAXARG) narg++;
                 break;
-            /* 파이프 및 리다이렉션 전용 타입 switch
+            // 파이프 및 리다이렉션 전용 타입 switch
             case PIPE :
                 for (i = 0; i < narg; i++) {
                     arg_pipe[pipe][i] = arg[i];
@@ -226,7 +226,7 @@ void procline()
                 redirection++;
                 narg = 0;
                 special_type = toktype;
-                break; */
+                break;
         }
     }
 }

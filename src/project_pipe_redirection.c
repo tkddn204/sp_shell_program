@@ -1,5 +1,6 @@
 #include "smallsh.h"
 
+// 파이프 처리 루틴이나 미구현
 int runcommand_pipe(int argc, char where)
 {
     int pid[2]; // pipe's each command pid
@@ -10,13 +11,13 @@ int runcommand_pipe(int argc, char where)
     char buf[BUF_SIZE];
     int i, j;
 
-    // make pipe
+    // 파이프를 생성함
     if (pipe(fd) < 0) {
         perror("smallsh pipe error");
         return -1;
     }
     
-    // fork commands
+    // 각각의 커맨드를 fork함
     for(i = 0; i < 2; i++) {
         if ((pid[i] = fork()) < 0) {
             perror("smallsh error");
@@ -33,16 +34,16 @@ int runcommand_pipe(int argc, char where)
                 close(fd[0]);
                 close(fd[1]);
             }
-            // for(j = 0; j < 2; j++) {
-            //     close(fd[j]);
-            // }
         }
+
+        // 해당 명령어 실행
         execvp(arg_pipe[i][0], arg_pipe[i]);
         perror(arg_pipe[i][0]);
         exit(1);
         // command_parser(pid[i], argc, arg_pipe[i]);
     }
 
+    // 부모일 경우 디스크립터 해제
     for(j = 0; j < 2; j++) {
         close(fd[j]);
     }
@@ -66,6 +67,7 @@ int runcommand_pipe(int argc, char where)
         return status;
 }
 
+// 리다이렉션 처리 루틴이나 미구현
 int runcommand_redirection(int argc, char where, int special_type)
 {
     int pid; // , exitstat, ret;
@@ -74,25 +76,22 @@ int runcommand_redirection(int argc, char where, int special_type)
     int file_id;
     int filename = arg_redirection[1][0];
 
-    // int m;
-	// for(m=0; m<20; m++) {
-    //     printf("%s\n", arg_redirection[m][0]);
-    //     printf("%s\n", arg_redirection[m][1]);
-	// }
-
     if ((pid = fork()) < 0) {
         perror("smallsh");
         return -1;
     }
 
+    // create
     if(pid == 0) {
         if(file_id = creat(filename, 0640)) {
             perror("file create error");
             exit(1);
         }
 
+        // dup2 함수로 파일디스크립터 복사
         dup2(file_id, STDOUT_FILENO);
         close(file_id);
+        
         execvp(*arg_redirection, arg_redirection);
         perror(*arg_redirection);
         exit(1);

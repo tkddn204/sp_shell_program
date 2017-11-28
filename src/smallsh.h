@@ -7,6 +7,8 @@
 #include <signal.h>
 #include <string.h>
 #include <fcntl.h>
+#include <memory.h>
+#include <wchar.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -39,8 +41,8 @@ void prompt(char *prom);
 void command_parser(int pid, int argc, char **cline);
 int alias_check(char *);
 
-static char arg_pipe[20][MAXARG+1];
-static char arg_redirection[20][MAXARG+1];
+extern static char arg_pipe[20][MAXARG+1];
+extern static char arg_redirection[20][MAXARG+1];
 int runcommand_pipe(int argc, char where);
 int runcommand_redirection(int argc, char where, int special_type);
 

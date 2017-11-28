@@ -1,6 +1,4 @@
 #include "smallsh.h"
-#include <memory.h>
-#include <wchar.h>
 
 
 #define ALIAS_FILE_NAME "/.alias"
@@ -11,10 +9,13 @@
 
 void helpPrint_alias();
 
+//alias 추가하기
 int alias_addAlias(FILE *, char *);
 
+//alias 저장된 명령 출력
 void alias_allPrint(FILE *);
 
+//alias 지정한 명령어 삭제
 void alias_unAlias(FILE *, char *);
 
 int uflag;
@@ -31,16 +32,18 @@ int project_alias(int argc, char **argv) {
     int optcount = 0;
     char add_tmp[BUFSIZ];
 
+    //초기화
     memset(add_tmp, 0, BUFSIZ);
 
     strcpy(path, home);
     strcat(path, ALIAS_FILE_NAME);
 
 
+    //옵션처리
     while ((n = getopt(argc, argv, "cu")) != -1) {
 
         switch (n) {
-            case 'c':  // history clear
+            case 'c':  // alias 정보모두 삭제
                 fp = fopen(path, "w");
                 printf("alias clear \n");
                 if (fp == NULL) {
@@ -49,6 +52,7 @@ int project_alias(int argc, char **argv) {
                 fclose(fp);
                 return 1;
 
+                //지정한 alias 삭제 옵션 플래
             case 'u':
                 uflag = 1;
                 optcount++;
@@ -63,12 +67,15 @@ int project_alias(int argc, char **argv) {
     }
 
 
+
+    // 유효성 검사 alias 삭제시 인자가 부족할시
     if (argc == 2 && uflag == 1) {
         helpPrint_alias();
         return 0;
     }
 
-    if (argc >= 2 && uflag == 0) { // 명령어추가
+    // 명령어추가
+    if (argc >= 2 && uflag == 0) {
 
         int iter = argc - 1;
         int j = 0;
@@ -76,6 +83,7 @@ int project_alias(int argc, char **argv) {
         strcpy(add_tmp, argv[1]);
         strcat(add_tmp, " ");
 
+        //띄어쓰기로 들어오는 실제 명령 처
         for (j = 2; j <= iter; j++) {
             strcat(add_tmp, argv[j]);
             strcat(add_tmp, " ");
@@ -84,13 +92,14 @@ int project_alias(int argc, char **argv) {
         fp = fopen(path, "a");
         alias_addAlias(fp, add_tmp);
 
-
-    } else if (argc == 1) { //명령어 출력
+        //명령어 출력
+    } else if (argc == 1) {
         fp = fopen(path, "r");
         printf("alias print \n");
         alias_allPrint(fp);
 
-    } else if (argc == 3 && uflag == 1) {  //명령어 삭
+        //명령어 삭제
+    } else if (argc == 3 && uflag == 1) {
         fp = fopen(path, "r");
         printf("alias rm \n");
         alias_unAlias(fp, argv[2]);
@@ -101,10 +110,10 @@ int project_alias(int argc, char **argv) {
 }
 
 void helpPrint_alias() {
-    perror("can not parse args - alias [c], [u] OR alias_command='command' \n"); //stderr
-    exit(22);
+    (void) fprintf(stderr, "can not parse args - alias [c], [u] OR alias_command='command' \n"); //stderr
 }
 
+//저장된 alias 출
 void alias_allPrint(FILE *fp) {
     char buf[BUFSIZ];
     while (fgets(buf, BUFSIZ, fp) != NULL) {
@@ -113,7 +122,7 @@ void alias_allPrint(FILE *fp) {
 
 
 }
-
+//alias 추가
 int alias_addAlias(FILE *fp, char *alias) {
 
     int i = 0;
@@ -234,14 +243,15 @@ void alias_unAlias(FILE *fp, char *alias) {
     strcat(tmpPath, TMP_ALIAS_FILE_NAME);
 
 
-    FILE *nfp = fopen(tmpPath, "w"); //새로 쓸 파일
+    //지정된 명령어를 삭제하고 새로 쓸 파일포인터 생성
+    FILE *nfp = fopen(tmpPath, "w");
     if (nfp == NULL) {
         perror("delete fail");
         exit(1);
     }
 
 
-    // 제거할 명령어 라인 검사
+    // 제거할 명령어 라인 검사 = 문자를 기준으로 alias와 실 명령으로 구분
     while (fgets(buf, BUFSIZ, fp) != NULL) {
 
         for (i = 0; buf[i] != '='; i++);
@@ -256,12 +266,14 @@ void alias_unAlias(FILE *fp, char *alias) {
         line++;
     }
 
+
+    // 삭제할 alias를 찾지 못했을때
     if (findFlag == 0) {
         printf("not found alias command\n");
         return;
     }
 
-
+    //원본파일의 첫 내용부터 새로운 파일에 쓰기 위해 오프셋 변경
     fseek(fp, 0, SEEK_SET);
 
 

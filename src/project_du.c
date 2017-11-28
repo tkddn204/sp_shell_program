@@ -15,6 +15,8 @@ int findDirectory(char *);
 int aflag, sflag, bflag, kflag;
 
 int project_du(int argc, char *argv[]) {
+    //printf("du - 20131705 Bae Min Su \n");
+
     int n;
     char *filePath = NULL;
     char buf[1024];
@@ -60,29 +62,32 @@ int project_du(int argc, char *argv[]) {
     }
 
 
-    if (optCount == 0) {
+    if (optCount == 0) { // 옵션이 없을시
         if (argv[1] == NULL) {
-            getcwd(buf, 1024);
+            getcwd(buf, 1024);  // 인자가 없을시 현재경로설정
             filePath = buf;
         } else {
-            filePath = argv[1];
+            filePath = argv[1]; // 인자가 있을시 인자를 경로로 설정
         }
-    } else {
-        if (argv[2] == NULL) {
+    } else { // 옵션이 존재할 시 
+        if (argv[2] == NULL) { // 인자로 경로가 주어지지 않을시 현재경로 설정
             getcwd(buf, 1024);
             filePath = buf;
-        } else {
+        } else {                // 인자가 있을시 인자를 경로로 설정
             filePath = argv[2];
         }
     }
 
+    //탐색 시작. 결과값으로 총 용량이 total에 저장
     int total = findDirectory(filePath);
 
-    printf("Total : %d\n", total);
+    printf("total : %d\n", total);
 
     return total;
 }
 
+
+//실제 디렉토리를 탐색하는 함수 (재귀 구조)
 int findDirectory(char *path) {
 
     struct dirent *dent;
@@ -92,6 +97,7 @@ int findDirectory(char *path) {
     int size, tmpTotal = 0;
     int defaultCheck = 0;
 
+    // 디렉토리 포인터 할당
     dir = opendir(path);
     if (dir == NULL) {
         perror("Failed to open directory");
@@ -101,18 +107,26 @@ int findDirectory(char *path) {
     while ((dent = readdir(dir))) {
 
         
-        defaultCheck++;
+        
+        // . 과 .. 건너뛰기 위한 처리
+        defaultCheck++; 
 
         if (defaultCheck > 2) {
-            subPath = pathAddString(path, dent->d_name);
-            if (isDir(subPath)) { // recursion if dir
+            
+            //디렉토리 내의 파일들을 읽어 새로운 경로 생성
+            subPath = pathAddString(path, dent->d_name); 
+            
+            //해당 파일이 디렉토리일시 재귀
+            if (isDir(subPath)) { 
                 tmpTotal = tmpTotal + findDirectory(subPath);
 
-            } else if (isRegularFile(subPath)) { // operate if file
+                //일반 파일일시 파일사이즈 측정
+            } else if (isRegularFile(subPath)) { 
 
                 if ((size = getFileSize(subPath)) == -1) {
                     printf("fail get file size : %s\n", subPath);
                 } else {
+                    //-a옵션이 있을시 파일의 사이즈  출력
                     if (sflag == 0 && aflag == 1) {
                         printf("file size : %d   path : %s\n", size, subPath);
                     }
@@ -125,12 +139,14 @@ int findDirectory(char *path) {
 
 
     }
-    if (sflag == 0) {
+    // 해당 디렉토리의 총 용량을 출력
+    if (sflag == 0) { 
         printf("%8.d   path : %s\n", tmpTotal, path);
     }
     closedir(dir);
-
-    return tmpTotal;
+    
+    // 해당 디렉토리에서 구한 총 용량을 리턴
+    return tmpTotal; 
 }
 
 void helpPrint() {
@@ -138,6 +154,8 @@ void helpPrint() {
     exit(1);
 }
 
+
+//파일 탐색에따른 경로추가를 위한 함수
 char *pathAddString(char *str1, char *str2) {
 
     int i = 0;
@@ -147,24 +165,29 @@ char *pathAddString(char *str1, char *str2) {
     int str2Len = (int) strlen(str2);
 
 
+    //새로운 경로생성을 위한 메모리할당
     sumStr = (char *) malloc(sizeof(char *) * (str1Len + str2Len + 1000));
+    
+    //기존의 경로를 합칠 변수에 저장
     for (i = 0; i < str1Len; i++) {
         sumStr[i] = str1[i];
 
     }
 
+    //경로 구분자 추가
     if (sumStr[str1Len - 1] != '/') {
         sumStr[str1Len] = '/';
         i++;
     }
 
+    //기존 경로에 추가될 파일 or 디렉토리명 추가
     for (j = 0; j < str2Len; j++) {
         sumStr[i + j] = str2[j];
     }
 
     return sumStr;
 }
-
+// 디렉토리인지 검사하는 함수
 int isDir(char *path) {
     struct stat buf;
     int len = (int) strlen(path);
@@ -174,6 +197,8 @@ int isDir(char *path) {
         return S_ISDIR(buf.st_mode);
 }
 
+
+// 일반파일인지 검사하는 함수
 int isRegularFile(char *path) {
     struct stat buf;
 
@@ -184,20 +209,23 @@ int isRegularFile(char *path) {
 
 }
 
+
+//읽은 파일의 경로를 통해 파일사이즈를 구함
 int getFileSize(char *path) {
     struct stat buf;
     if (stat(path, &buf) == -1)
         return -1;
 
+
+    // opt -b의 경우 바이트단위 리턴
     if (bflag == 1)
         return (int) buf.st_size;
+
+    // opt -k 킬로바이트단위 리턴
     else if (kflag == 1)
         return (int) buf.st_blocks / 2;
 
+    //옵션 없을시 stat 구조체 blocks 단위 출력
     return (int) buf.st_blocks;
 
 }
-
-// int main(int argc, char **argv) {
-//     return project_du(argc, argv);
-// }
