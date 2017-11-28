@@ -23,8 +23,6 @@ void command_parser(int pid, int argc, char **cline) {
             project_df(argc, cline);
         else if (strcmp("du", *cline) == 0)
             project_du(argc, cline);
-        else if (strcmp("export", *cline) == 0)
-            project_export(argc, cline);
         // alias 명령어 처리 로직 실행
         else if (alias_check(cline[0]) == -1) {
             execvp(*cline, cline);

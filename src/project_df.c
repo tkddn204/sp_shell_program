@@ -15,24 +15,24 @@ int project_df(int argc, char **argv) {
         perror("It is not in the correct format ");
         exit(1);
     }
-    FileCheck();
-    while((n = getopt(argc,argv,"kga"))!=-1) {
+    FileCheck(); // get file in current directory
+    while((n = getopt(argc,argv,"kga"))!=-1) { // option
         switch(n) {
-            case 'k':
+            case 'k': //kilobyte 
                 printf("\nFileSystem");
                 printf("\n1024-blocks  : %lu\n",GetFileSystemSpace());
                 printf("Available    : %lu\n",GetFileSystemAvailableSpace());
                 printf("Used         : %lu\n",GetFileSystemSpace() - GetFileSystemAvailableSpace());
                 printf("Capacity     : %lu%%\n\n",(((stat.f_blocks/2)-(stat.f_bavail/2))*100)/(stat.f_blocks/2)+1);
                 break;
-            case 'g':
+            case 'g': //gigabyte
                 printf("\nFileSystem\n");
                 printf("1G-blocks    : %luG\n",GetFileSystemSpace()/1024/1024+1);
                 printf("Available    : %luG\n",GetFileSystemAvailableSpace()/1024/1024+1);
                 printf("Used         : %luG\n",(GetFileSystemSpace() - GetFileSystemAvailableSpace())/1024/1024);
                 printf("Capacity     : %lu%%\n\n",(((stat.f_blocks/2)-(stat.f_bavail/2))*100)/(stat.f_blocks/2)+1);
                 break;
-            case 'a':
+            case 'a': //filesystem all infomation
                 printf("\nFileSystem\n");
                 printf("Block size      : %lu\n",stat.f_bsize);
                 printf("Flag size       : %lu\n",stat.f_frsize);
@@ -46,10 +46,10 @@ int project_df(int argc, char **argv) {
                 break;
             case '?':
             default:
-                explainCommand();
+                explainCommand(); // option explain
                 break;
         }        
-        unlink("fileSystemTest");
+        unlink("fileSystemTest"); // temporary file remove
         exit(1);
     }
     printf("\nFileSystem\n");
@@ -67,15 +67,15 @@ void explainCommand() {
     exit(1);
 }
 
-unsigned long GetFileSystemSpace() {
+unsigned long GetFileSystemSpace() { //return 1k-block
     return (unsigned long)(stat.f_blocks/2);
 }
 
-unsigned long GetFileSystemAvailableSpace() {
+unsigned long GetFileSystemAvailableSpace() {//return available block
     return (unsigned long)((stat.f_bavail)/2);
 }
 
-void FileCheck() {
+void FileCheck() { //create temporaryfile
     creat("fileSystemTest",0777);
     if(statvfs("fileSystemTest",&stat) == -1) {
         perror("Error ");

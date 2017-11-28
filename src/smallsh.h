@@ -54,7 +54,6 @@ int project_alias(int argc, char **argv);
 int project_ps(int argc, char **argv);
 int project_df(int argc, char **argv);
 int project_du(int argc, char **argv);
-int project_export(int argc, char **argv);
 // project functions
 
 #endif
