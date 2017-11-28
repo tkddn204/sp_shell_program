@@ -3,7 +3,7 @@
 ## 사용법
 1. `cdmod 777 make.sh`
 2. `./make.sh`
-2. `./sp_program`
+2. `./src/sp_program`
 ## 팀원
 [tkddn204(SsangWoo)](https://github.com/tkddn204),
 [ds7ggc](https://github.com/ds7ggc),
