@@ -13,23 +13,22 @@ void command_parser(int pid, int argc, char **cline) {
     } else if (pid == 0) { // 자식 프로세스인 경우
         if (strcmp("exit", *cline) == 0) {
             kill(getppid(), SIGINT);
-        } else if (strcmp("history", *cline) == 0)
+        } else if (strcmp("history", *cline) == 0) {
             project_history(argc, cline);
-        else if (strcmp("alias", *cline) == 0)
+        } else if (strcmp("alias", *cline) == 0) {
             project_alias(argc, cline);
-        else if (strcmp("ps", *cline) == 0)
+        } else if (strcmp("ps", *cline) == 0) {
             project_ps(argc, cline);
-        else if (strcmp("df", *cline) == 0)
+        } else if (strcmp("df", *cline) == 0) {
             project_df(argc, cline);
-        else if (strcmp("du", *cline) == 0)
+        } else if (strcmp("du", *cline) == 0) {
             project_du(argc, cline);
         // alias 명령어 처리 로직 실행
-        else if (alias_check(cline[0]) == -1) {
+        } else if (alias_check(cline[0]) == -1) {
             execvp(*cline, cline);
             perror(*cline);
             exit(127);
-        }
-        else if (strcmp("cd", *cline) == 0) {
+        } else if (strcmp("cd", *cline) == 0) {
             // nothing
         }
         exit(0);
