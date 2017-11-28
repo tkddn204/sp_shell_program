@@ -111,14 +111,15 @@ int findDirectory(char *path) {
 
         if (defaultCheck > 2) {
 
-            printf("asdfadsf2\n");
+            printf("asdfadsf0\n");
             //디렉토리 내의 파일들을 읽어 새로운 경로 생성
             subPath = pathAddString(path, dent->d_name);
 
             //해당 파일이 디렉토리일시 재귀
+                printf("asdfadsf1\n");
             if (isDir(subPath)) {
                 tmpTotal = tmpTotal + findDirectory(subPath);
-
+                printf("asdfadsf3\n");
                 //일반 파일일시 파일사이즈 측정
             } else if (isRegularFile(subPath)) {
 
@@ -132,13 +133,8 @@ int findDirectory(char *path) {
                     tmpTotal = tmpTotal + size;
                 }
             }
-
-
         }
-
-
     }
-    printf("asdfadsf3\n");
     // 해당 디렉토리의 총 용량을 출력
     if (sflag == 0) {
         printf("%8.d   path : %s\n", tmpTotal, path);
@@ -164,6 +160,7 @@ char *pathAddString(char *str1, char *str2) {
     int str1Len = (int) strlen(str1);
     int str2Len = (int) strlen(str2);
 
+    printf("asdfadsf2\n");
 
     //새로운 경로생성을 위한 메모리할당
     sumStr = (char *) malloc(sizeof(char *) * (str1Len + str2Len + 1000));
