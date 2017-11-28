@@ -76,7 +76,7 @@ int runcommand_redirection(int argc, char where, int special_type)
 
     int m;
 	for(m=0; m<20; m++) {
-        printf("%s\n", arg_redirection[m][n]);
+        printf("%s\n", arg_redirection[m]);
 	}
 
     if ((pid = fork()) < 0) {
