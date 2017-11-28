@@ -118,7 +118,7 @@ int findDirectory(char *path) {
                 tmpTotal = tmpTotal + findDirectory(subPath);
                 //일반 파일일시 파일사이즈 측정
             } else if (isRegularFile(subPath)) {
-
+                perror("asdf1");
                 if ((size = getFileSize(subPath)) == -1) {
                     printf("fail get file size : %s\n", subPath);
                 } else {
@@ -127,7 +127,9 @@ int findDirectory(char *path) {
                         printf("file size : %d   path : %s\n", size, subPath);
                     }
                     tmpTotal = tmpTotal + size;
+                    perror("asdf2");
                 }
+                perror("asdf3");
             }
         }
     }
@@ -157,12 +159,11 @@ char *pathAddString(char *str1, char *str2) {
     int str2Len = (int) strlen(str2);
 
     //새로운 경로생성을 위한 메모리할당
-    sumStr = (char *) malloc(sizeof(char *) * (str1Len + str2Len + 5000));
+    sumStr = (char *) malloc(sizeof(char *) * (str1Len + str2Len + 1000));
 
     //기존의 경로를 합칠 변수에 저장
     for (i = 0; i < str1Len; i++) {
         sumStr[i] = str1[i];
-
     }
 
     //경로 구분자 추가
@@ -183,7 +184,6 @@ int isDir(char *path) {
     struct stat buf;
     // int len = (int) strlen(path);
     if (stat(path, &buf) == -1) {
-        perror("asdf");
         return 0;
     }
     else
