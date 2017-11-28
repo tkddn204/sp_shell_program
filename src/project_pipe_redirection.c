@@ -71,12 +71,6 @@ int runcommand_redirection(int argc, char where, int special_type)
     int pr_code;
     int file_id;
 
-	for(j=0; j<=i-2; j++)
-        temp1[j] = arg_redirection[j];
-
-    temp1[j+1] = NULL;
-    temp2[0] = arg_redirection[i];
-    temp2[1] = NULL;
 
     if ((pid = fork()) < 0) {
         perror("smallsh");
@@ -89,15 +83,15 @@ int runcommand_redirection(int argc, char where, int special_type)
 
     if(pid == 0) {
         
-        if(file_id = creat(arg_redirection[2], 0640)) {
+        if(file_id = creat(*arg_redirection[2], 0640)) {
             perror("file create error");
             exit(1);
         }
 
         dup2(file_id, STDOUT_FILENO);
         close(file_id);
-        execvp(*temp1, temp1);
-        perror(*temp1);
+        execvp(*arg_redirection, arg_redirection);
+        perror(*arg_redirection);
         exit(1);
     }
 
