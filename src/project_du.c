@@ -69,7 +69,7 @@ int project_du(int argc, char *argv[]) {
         } else {
             filePath = argv[1]; // 인자가 있을시 인자를 경로로 설정
         }
-    } else { // 옵션이 존재할 시 
+    } else { // 옵션이 존재할 시
         if (argv[2] == NULL) { // 인자로 경로가 주어지지 않을시 현재경로 설정
             getcwd(buf, 1024);
             filePath = buf;
@@ -106,22 +106,22 @@ int findDirectory(char *path) {
 
     while ((dent = readdir(dir))) {
 
-        
-        
+
+
         // . 과 .. 건너뛰기 위한 처리
-        defaultCheck++; 
+        defaultCheck++;
 
         if (defaultCheck > 2) {
-            
+
             //디렉토리 내의 파일들을 읽어 새로운 경로 생성
-            subPath = pathAddString(path, dent->d_name); 
-            
+            subPath = pathAddString(path, dent->d_name);
+
             //해당 파일이 디렉토리일시 재귀
-            if (isDir(subPath)) { 
+            if (isDir(subPath)) {
                 tmpTotal = tmpTotal + findDirectory(subPath);
 
                 //일반 파일일시 파일사이즈 측정
-            } else if (isRegularFile(subPath)) { 
+            } else if (isRegularFile(subPath)) {
 
                 if ((size = getFileSize(subPath)) == -1) {
                     printf("fail get file size : %s\n", subPath);
@@ -140,13 +140,13 @@ int findDirectory(char *path) {
 
     }
     // 해당 디렉토리의 총 용량을 출력
-    if (sflag == 0) { 
+    if (sflag == 0) {
         printf("%8.d   path : %s\n", tmpTotal, path);
     }
     closedir(dir);
-    
+
     // 해당 디렉토리에서 구한 총 용량을 리턴
-    return tmpTotal; 
+    return tmpTotal;
 }
 
 void helpPrint() {
@@ -167,7 +167,7 @@ char *pathAddString(char *str1, char *str2) {
 
     //새로운 경로생성을 위한 메모리할당
     sumStr = (char *) malloc(sizeof(char *) * (str1Len + str2Len + 1000));
-    
+
     //기존의 경로를 합칠 변수에 저장
     for (i = 0; i < str1Len; i++) {
         sumStr[i] = str1[i];
