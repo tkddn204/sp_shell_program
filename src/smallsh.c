@@ -164,7 +164,7 @@ void procline()
     int special_type = 0; /* PIPE or REDIRECTION */
     int pipe = 0; /* 파이프 갯수 */
     int redirection = 0; /* 리다이렉션 갯수 */
-    int i;
+    int i, m, n;
 
 
 	for(m=0; m<20; m++) {
