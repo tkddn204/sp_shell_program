@@ -72,7 +72,7 @@ int runcommand_redirection(int argc, char where, int special_type)
     int status;
     int pr_code;
     int file_id;
-    int filename = arg_redirection[2][0];
+    int filename = arg_redirection[1][0];
 
     if ((pid = fork()) < 0) {
         perror("smallsh");
