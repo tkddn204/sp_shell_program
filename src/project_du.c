@@ -105,9 +105,6 @@ int findDirectory(char *path) {
     }
 
     while ((dent = readdir(dir))) {
-
-
-
         // . 과 .. 건너뛰기 위한 처리
         defaultCheck++;
 
@@ -150,7 +147,7 @@ int findDirectory(char *path) {
 }
 
 void helpPrint() {
-    (void) fprintf(stderr, "can not parse args - du [a],[b],[k],[s] path\n"); //stderr
+    perror("can not parse args - du [a],[b],[k],[s] path\n"); //stderr
     exit(1);
 }
 
