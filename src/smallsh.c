@@ -209,7 +209,7 @@ void procline()
                 break;
             case REDIRECTION_LEFT :
                 for (i = 0; i < narg; i++) {
-                    arg_redirection[redirection][i];
+                    arg_redirection[redirection][i] = arg[i];
                 }
                 arg_redirection[redirection][narg] = NULL;
                 redirection++;
@@ -218,7 +218,7 @@ void procline()
                 break;
             case REDIRECTION_RIGHT :
                 for (i = 0; i < narg; i++) {
-                    arg_redirection[redirection][i];
+                    arg_redirection[redirection][i] = arg[i];
                 }
                 arg_redirection[redirection][narg] = NULL;
                 redirection++;

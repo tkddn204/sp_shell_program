@@ -74,11 +74,6 @@ int runcommand_redirection(int argc, char where, int special_type)
     int file_id;
     int filename = arg_redirection[1][0];
 
-    int m;
-	for(m=0; m<20; m++) {
-        printf("%s\n", arg_redirection[m]);
-	}
-
     if ((pid = fork()) < 0) {
         perror("smallsh");
         return -1;
