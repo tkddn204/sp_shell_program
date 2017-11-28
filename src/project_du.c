@@ -104,7 +104,6 @@ int findDirectory(char *path) {
         return -1; // alter exit
     }
 
-    printf("asdfadsf\n");
     while ((dent = readdir(dir))) {
         // . 과 .. 건너뛰기 위한 처리
         defaultCheck++;
@@ -158,7 +157,7 @@ char *pathAddString(char *str1, char *str2) {
     int str2Len = (int) strlen(str2);
 
     //새로운 경로생성을 위한 메모리할당
-    sumStr = (char *) malloc(sizeof(char *) * (str1Len + str2Len + 1000));
+    sumStr = (char *) malloc(sizeof(char *) * (str1Len + str2Len + 5000));
 
     //기존의 경로를 합칠 변수에 저장
     for (i = 0; i < str1Len; i++) {
