@@ -70,7 +70,7 @@ int runcommand_redirection(int argc, char where, int special_type)
     int status;
     int pr_code;
     int file_id;
-
+    int filename = arg_redirection[2][0];
 
     if ((pid = fork()) < 0) {
         perror("smallsh");
@@ -83,7 +83,7 @@ int runcommand_redirection(int argc, char where, int special_type)
 
     if(pid == 0) {
         
-        if(file_id = creat(*arg_redirection[2], 0640)) {
+        if(file_id = creat(filename, 0640)) {
             perror("file create error");
             exit(1);
         }
