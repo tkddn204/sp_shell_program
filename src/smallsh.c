@@ -200,7 +200,7 @@ void procline()
                 break;
             case PIPE :
                 for (i = 0; i < narg; i++) {
-                    arg_pipe[pipe][i] = ptr[i];
+                    arg_pipe[pipe][i] = arg[i];
                 }
                 pipe++;
                 special_type = toktype;
@@ -208,7 +208,7 @@ void procline()
                 break;
             case REDIRECTION_LEFT :
                 for (i = 0; i < narg; i++) {
-                    arg_redirection[redirection][i] = ptr[i];
+                    arg_redirection[redirection][i] = arg[i];
                 }
                 redirection++;
                 narg = 0;
