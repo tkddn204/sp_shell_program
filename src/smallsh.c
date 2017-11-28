@@ -168,9 +168,10 @@ void procline()
 
 
 	for(m=0; m<20; m++) {
-		for(n=0;n<MAXARG+1;n++)
+		for(n=0;n<MAXARG+1;n++) {
             arg_pipe[m][n]=0;
             arg_redirection[m][n]=0;
+        }
 	}
 
     /* 토큰 유형에 따라 행동을 취한다. */
