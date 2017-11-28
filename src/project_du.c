@@ -118,7 +118,6 @@ int findDirectory(char *path) {
                 tmpTotal = tmpTotal + findDirectory(subPath);
                 //일반 파일일시 파일사이즈 측정
             } else if (isRegularFile(subPath)) {
-                perror("asdf1");
                 if ((size = getFileSize(subPath)) == -1) {
                     printf("fail get file size : %s\n", subPath);
                 } else {
@@ -127,9 +126,7 @@ int findDirectory(char *path) {
                         printf("file size : %d   path : %s\n", size, subPath);
                     }
                     tmpTotal = tmpTotal + size;
-                    perror("asdf2");
                 }
-                perror("asdf3");
             }
         }
     }
@@ -181,7 +178,7 @@ char *pathAddString(char *str1, char *str2) {
 }
 // 디렉토리인지 검사하는 함수
 int isDir(char *path) {
-    struct stat buf;
+    struct stat *buf;
     // int len = (int) strlen(path);
     if (stat(path, &buf) == -1) {
         return 0;
