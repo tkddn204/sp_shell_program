@@ -183,15 +183,12 @@ char *pathAddString(char *str1, char *str2) {
 int isDir(char *path) {
     struct stat buf;
     // int len = (int) strlen(path);
-    printf("asdfadsf dir\n");
     if (stat(path, &buf) == -1) {
-        printf("asdfadsf dir stat\n");
+        perror("asdf");
         return 0;
     }
-    else {
-        printf("asdfadsf dir isdir\n");
+    else
         return S_ISDIR(buf.st_mode);
-    }
 }
 
 
