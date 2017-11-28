@@ -23,9 +23,9 @@ int findDirectory(char *);
 int aflag, sflag, bflag, kflag;
 
 
-int main(int argc, char **argv) {
-    return project_du(argc, argv);
-}
+// int main(int argc, char **argv) {
+//     return project_du(argc, argv);
+// }
 
 int project_du(int argc, char *argv[]) {
     //printf("du - 20131705 Bae Min Su \n");
