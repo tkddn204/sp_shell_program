@@ -86,7 +86,6 @@ int project_du(int argc, char *argv[]) {
     return total;
 }
 
-
 //실제 디렉토리를 탐색하는 함수 (재귀 구조)
 int findDirectory(char *path) {
 
