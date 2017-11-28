@@ -37,8 +37,8 @@ int runcommand_pipe(int argc, char where)
             //     close(fd[j]);
             // }
         }
-        execvp(arg_pipe[i], arg_pipe[i]);
-        perror(arg_pipe[i]);
+        execvp(arg_pipe[i][0], arg_pipe[i]);
+        perror(arg_pipe[i][0]);
         exit(1);
         // command_parser(pid[i], argc, arg_pipe[i]);
     }
