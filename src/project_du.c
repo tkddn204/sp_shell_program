@@ -1,4 +1,4 @@
-#inclue "smallsh.h"
+#include "smallsh.h"
 
 #include <sys/stat.h>
 #include <dirent.h>
