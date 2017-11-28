@@ -173,18 +173,18 @@ char *pathAddString(char *str1, char *str2) {
     for (j = 0; j < str2Len; j++) {
         sumStr[i + j] = str2[j];
     }
-
+    printf("%s\n", sumStr);
     return sumStr;
 }
 // 디렉토리인지 검사하는 함수
 int isDir(char *path) {
-    struct stat *buf;
+    struct stat buf;
     // int len = (int) strlen(path);
     if (stat(path, &buf) == -1) {
         return 0;
     }
     else
-        return S_ISDIR(buf->st_mode);
+        return S_ISDIR(buf.st_mode);
 }
 
 
