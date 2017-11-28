@@ -111,15 +111,12 @@ int findDirectory(char *path) {
 
         if (defaultCheck > 2) {
 
-            printf("asdfadsf0\n");
             //디렉토리 내의 파일들을 읽어 새로운 경로 생성
             subPath = pathAddString(path, dent->d_name);
 
             //해당 파일이 디렉토리일시 재귀
-                printf("asdfadsf1\n");
             if (isDir(subPath)) {
                 tmpTotal = tmpTotal + findDirectory(subPath);
-                printf("asdfadsf3\n");
                 //일반 파일일시 파일사이즈 측정
             } else if (isRegularFile(subPath)) {
 
@@ -160,8 +157,6 @@ char *pathAddString(char *str1, char *str2) {
     int str1Len = (int) strlen(str1);
     int str2Len = (int) strlen(str2);
 
-    printf("asdfadsf2\n");
-
     //새로운 경로생성을 위한 메모리할당
     sumStr = (char *) malloc(sizeof(char *) * (str1Len + str2Len + 1000));
 
@@ -187,11 +182,16 @@ char *pathAddString(char *str1, char *str2) {
 // 디렉토리인지 검사하는 함수
 int isDir(char *path) {
     struct stat buf;
-    int len = (int) strlen(path);
-    if (stat(path, &buf) == -1)
+    // int len = (int) strlen(path);
+    printf("asdfadsf dir\n");
+    if (stat(path, &buf) == -1) {
+        printf("asdfadsf dir stat\n");
         return 0;
-    else
+    }
+    else {
+        printf("asdfadsf dir isdir\n");
         return S_ISDIR(buf.st_mode);
+    }
 }
 
 
