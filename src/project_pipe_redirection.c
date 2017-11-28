@@ -37,7 +37,10 @@ int runcommand_pipe(int argc, char where)
             //     close(fd[j]);
             // }
         }
-        command_parser(pid[i], argc, arg_pipe[i]);
+        execvp(arg_pipe[i], arg_pipe[i]);
+        perror(arg_pipe[i]);
+        exit(1);
+        // command_parser(pid[i], argc, arg_pipe[i]);
     }
 
     for(j = 0; j < 2; j++) {
